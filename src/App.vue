@@ -26,6 +26,10 @@
           <li>
             <a @click="showItemPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
           </li>
+          <li>
+            <a @click="showItemDataPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
+          </li>
+
         </ul>
 
       </div>
@@ -78,6 +82,9 @@ export default {
     },
     showItemPage: function () {
       this.$router.push("/2")
+    },
+    showItemDataPage: function () {
+      this.$router.push("/3")
     }
   }
 }
