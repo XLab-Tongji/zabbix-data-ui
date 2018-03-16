@@ -1,24 +1,25 @@
 <template>
-  <div id="hostPage">
-    {{hosts}}
+  <div id="itemPage">
+    {{items}}
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'HostPage',
+  name: 'ItemPage',
   data () {
     return {
-      hosts: null,
+      items: null,
+      hostId: '10254',
     }
   },
   mounted () {
     // get zabbix hosts
-    this.$http.get(zabbixUrl + '/hosts').then(
+    this.$http.get(zabbixUrl + '/items', {params: {'hostId': this.hostId}}).then(
       function (response) {
         console.log(response)
-        this.hosts = response.body
+        this.itemsgit = response.body
       }, function (error) {
         console.log(error)
       }

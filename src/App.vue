@@ -21,10 +21,10 @@
             </div>
           </li>
           <li class="active">
-            <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Main view</span></a>
+            <a @click="showHostPage"><i class="fa fa-th-large"></i> <span class="nav-label">Main view</span></a>
           </li>
           <li>
-            <a href="minor.html"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
+            <a @click="showItemPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
           </li>
         </ul>
 
@@ -71,7 +71,15 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    showHostPage: function () {
+      this.$router.push("/")
+    },
+    showItemPage: function () {
+      this.$router.push("/2")
+    }
+  }
 }
 </script>
 
