@@ -1,5 +1,5 @@
 <template>
-  <div id="HelloWorld">
+  <div id="hostPage">
     {{hosts}}
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: 'HelloWorld',
+  name: 'HostPage',
   data () {
     return {
       hosts: null,
@@ -18,8 +18,7 @@ export default {
     this.$http.get(zabbixUrl).then(
       function (response) {
         console.log(response)
-
-        this.hosts = response
+        this.hosts = response.body
       }, function (error) {
         console.log(error)
       }
