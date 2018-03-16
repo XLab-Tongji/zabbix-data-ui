@@ -14,16 +14,20 @@ export default {
       hostId: '10254',
     }
   },
+  methods: {
+    getItemInfo: function () {
+      this.$http.get(zabbixUrl + '/items', {params: {'hostId': this.hostId}}).then(
+        function (response) {
+          console.log(response)
+          this.itemsgit = response.body
+        }, function (error) {
+          console.log(error)
+        }
+      )
+    }
+  },
   mounted () {
-    // get zabbix hosts
-    this.$http.get(zabbixUrl + '/items', {params: {'hostId': this.hostId}}).then(
-      function (response) {
-        console.log(response)
-        this.itemsgit = response.body
-      }, function (error) {
-        console.log(error)
-      }
-    )
+    this.getItemInfo()
   }
 }
 </script>
