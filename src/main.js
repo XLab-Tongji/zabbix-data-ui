@@ -7,6 +7,8 @@ import VueResource from 'vue-resource'
 
 import './global'
 
+import $ from 'jquery'
+
 Vue.config.productionTip = false
 
 Vue.use(VueResource);
