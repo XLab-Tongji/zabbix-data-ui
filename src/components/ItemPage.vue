@@ -1,6 +1,8 @@
 <template>
   <div id="itemPage">
-    {{items}}
+    <div v-for="item in items">
+      <button  type="button" class="btn btn-w-m btn-success" style="margin-top: 10px; margin-left: 20px;">{{item.name}}, {{item.key}}</button>
+    </div>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ export default {
   data () {
     return {
       items: null,
-      hostId: '10254',
+      hostId: null,
     }
   },
   methods: {
@@ -19,7 +21,7 @@ export default {
       this.$http.get(zabbixUrl + '/items', {params: {'hostId': this.hostId}}).then(
         function (response) {
           console.log(response)
-          this.itemsgit = response.body
+          this.items = response.body
         }, function (error) {
           console.log(error)
         }
@@ -27,6 +29,7 @@ export default {
     }
   },
   mounted () {
+    this.hostId = this.$route.params.hostId
     this.getItemInfo()
   }
 }

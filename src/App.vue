@@ -20,14 +20,16 @@
               IN+
             </div>
           </li>
+
+          <!--nav-list-->
           <li class="active">
-            <a @click="showHostPage"><i class="fa fa-th-large"></i> <span class="nav-label">Main view</span></a>
+            <a @click="showHostPage"><i class="fa fa-th-large"></i> <span class="nav-label">HOSTS</span></a>
           </li>
           <li>
-            <a @click="showItemPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
+            <a @click="showItemPage"><i class="fa fa-th-large"></i> <span class="nav-label">ITEMS</span> </a>
           </li>
           <li>
-            <a @click="showItemDataPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
+            <a @click="showItemDataPage"><i class="fa fa-th-large"></i> <span class="nav-label">DATA</span> </a>
           </li>
 
         </ul>
@@ -81,10 +83,11 @@ export default {
       this.$router.push("/")
     },
     showItemPage: function () {
-      this.$router.push("/2")
+//      this.$router.push("/items")
+      this.$router.push({name: "ItemPage", params: {hostId: '10254'}})
     },
     showItemDataPage: function () {
-      this.$router.push("/3")
+      this.$router.push("/data")
     }
   }
 }

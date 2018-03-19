@@ -1,6 +1,6 @@
 <template>
   <div id="hostPage">
-    {{hosts}}
+    <button v-for="host in hosts" @click="showHostItems(host)" type="button" class="btn btn-w-m btn-primary" style="margin-top: 20px; margin-left: 20px">{{host}}</button>
   </div>
 </template>
 
@@ -13,16 +13,24 @@ export default {
       hosts: null,
     }
   },
+  methods: {
+    getZabbixHosts: function () {
+      this.$http.get(zabbixUrl + '/hosts').then(
+        function (response) {
+          console.log(response)
+          this.hosts = response.body
+        }, function (error) {
+          console.log(error)
+        }
+      )
+    },
+    showHostItems: function (host) {
+      console.log('host: ' + host)
+      this.$router.push({name: "ItemPage", params: {hostId: host}})
+    }
+  },
   mounted () {
-    // get zabbix hosts
-    this.$http.get(zabbixUrl + '/hosts').then(
-      function (response) {
-        console.log(response)
-        this.hosts = response.body
-      }, function (error) {
-        console.log(error)
-      }
-    )
+    this.getZabbixHosts()
   }
 }
 </script>

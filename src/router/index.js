@@ -14,12 +14,12 @@ export default new Router({
       component: HostPage
     },
     {
-      path: '/2',
+      path: '/items',
       name: 'ItemPage',
       component: ItemPage
     },
     {
-      path: '/3',
+      path: '/data',
       name: 'ItemDataPage',
       component: ItemDataPage
     }
