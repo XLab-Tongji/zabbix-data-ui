@@ -5,13 +5,19 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 
-import './global'
+import ECharts from 'vue-echarts/components/ECharts'
+import 'echarts/lib/component/title'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/dataZoom'
 
-import $ from 'jquery'
+import './global'
 
 Vue.config.productionTip = false
 
 Vue.use(VueResource);
+
+Vue.component('eChart',ECharts)
 
 /* eslint-disable no-new */
 new Vue({
