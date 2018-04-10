@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import Vuex from 'vuex'
+import ElementUI from 'element-ui'
+import '../theme/index.css'
 
 import ECharts from 'vue-echarts/components/ECharts'
 import 'echarts/lib/component/title'
@@ -18,6 +20,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueResource);
 Vue.use(Vuex)
+Vue.use(ElementUI);
 
 Vue.component('eChart',ECharts)
 

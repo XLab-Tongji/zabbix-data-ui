@@ -1,9 +1,25 @@
 <template>
   <div style="width:100%" id="itemDataPage">
-    <button @click="myRender">render</button>
-    <div v-for="(item,index) in optionData">
-      <hr v-if="index > 0"/>
-      <eChart :options="options[index]" style="width:100%"></eChart>
+    <div>
+      <el-tree class="el_tree_style"
+        :data="items"
+        show-checkbox
+        node-key="id"
+        :props="defaultProps"
+        ref="tree"
+        @check-change="handleCheckChange"
+        @node-expand="handleNodeExpand"
+        @node-collapse="handleNodeCollapse">
+      </el-tree>
+    </div>
+    <div style="width:100%">
+      <div v-for="item in items" style="width:100%">
+        <div v-for="child in item.children" style="width:100%">
+          <div v-if="child.rendered" style="width:100%" >
+            <eChart :options="child.chartOptions" style="width:100%" name="myCharts"></eChart>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -15,20 +31,353 @@ export default {
     return {
       optionData: [],
       data: [
-        { "timeStamp": "1521035350", "value": "1054859264" }, { "timeStamp": "1521035410", "value": "1054396416" }, { "timeStamp": "1521035470", "value": "1052774400" }, { "timeStamp": "1521035530", "value": "1051287552" }, { "timeStamp": "1521035590", "value": "1051049984" }, { "timeStamp": "1521035650", "value": "1050828800" }, { "timeStamp": "1521035710", "value": "1050701824" }, { "timeStamp": "1521035770", "value": "1050853376" }, { "timeStamp": "1521035830", "value": "1050984448" }, { "timeStamp": "1521035890", "value": "1052344320" }, { "timeStamp": "1521035950", "value": "1052409856" }, { "timeStamp": "1521036010", "value": "1051508736" }, { "timeStamp": "1521036070", "value": "1052073984" }, { "timeStamp": "1521036130", "value": "1051918336" }, { "timeStamp": "1521036190", "value": "1052385280" }, { "timeStamp": "1521036250", "value": "1052311552" }, { "timeStamp": "1521036310", "value": "1051865088" }, { "timeStamp": "1521036370", "value": "1051783168" }, { "timeStamp": "1521036430", "value": "1052086272" }, { "timeStamp": "1521036490", "value": "1051967488" }, { "timeStamp": "1521036550", "value": "1052356608" }, { "timeStamp": "1521036610", "value": "1053011968" }, { "timeStamp": "1521036670", "value": "1052635136" }, { "timeStamp": "1521036730", "value": "1052401664" }, { "timeStamp": "1521036790", "value": "1052352512" }, { "timeStamp": "1521036850", "value": "1052794880" }, { "timeStamp": "1521036969", "value": "1052479488" }, { "timeStamp": "1521036970", "value": "1052004352" }, { "timeStamp": "1521037030", "value": "1052110848" }, { "timeStamp": "1521037090", "value": "1052020736" }, { "timeStamp": "1521037150", "value": "1051664384" }, { "timeStamp": "1521037210", "value": "1052082176" }, { "timeStamp": "1521037270", "value": "1051553792" }, { "timeStamp": "1521037330", "value": "1051275264" }, { "timeStamp": "1521037390", "value": "1051238400" }, { "timeStamp": "1521037450", "value": "1051475968" }, { "timeStamp": "1521037510", "value": "1051070464" }, { "timeStamp": "1521037570", "value": "1051054080" }, { "timeStamp": "1521037630", "value": "1051406336" }, { "timeStamp": "1521037690", "value": "1050865664" }, { "timeStamp": "1521037750", "value": "1051213824" }, { "timeStamp": "1521037810", "value": "1051189248" }, { "timeStamp": "1521037870", "value": "1051295744" }, { "timeStamp": "1521037930", "value": "1051107328" }, { "timeStamp": "1521037990", "value": "1051217920" }, { "timeStamp": "1521038050", "value": "1051136000" }, { "timeStamp": "1521038110", "value": "1051676672" }, { "timeStamp": "1521038170", "value": "1051357184" }, { "timeStamp": "1521038230", "value": "1051066368" }, { "timeStamp": "1521038290", "value": "1051258880" }, { "timeStamp": "1521038350", "value": "1051332608" }, { "timeStamp": "1521038410", "value": "1051439104" }, { "timeStamp": "1521038470", "value": "1050816512" }, { "timeStamp": "1521038530", "value": "1051115520" }, { "timeStamp": "1521038590", "value": "1051176960" }, { "timeStamp": "1521038650", "value": "1051226112" }, { "timeStamp": "1521038710", "value": "1050923008" }, { "timeStamp": "1521038770", "value": "1050902528" }, { "timeStamp": "1521038830", "value": "1050947584" }, { "timeStamp": "1521038890", "value": "1051119616" }, { "timeStamp": "1521038950", "value": "1051176960" }, { "timeStamp": "1521039010", "value": "1051066368" }, { "timeStamp": "1521039070", "value": "1050914816" }, { "timeStamp": "1521039130", "value": "1050693632" }, { "timeStamp": "1521039190", "value": "1050537984" }, { "timeStamp": "1521039250", "value": "1050599424" }, { "timeStamp": "1521039310", "value": "1050451968" }, { "timeStamp": "1521039370", "value": "1050341376" }, { "timeStamp": "1521039430", "value": "1050501120" }, { "timeStamp": "1521039490", "value": "1050443776" }, { "timeStamp": "1521039550", "value": "1050529792" }, { "timeStamp": "1521039610", "value": "1049874432" }, { "timeStamp": "1521039670", "value": "1050357760" }, { "timeStamp": "1521039730", "value": "1050472448" }, { "timeStamp": "1521039790", "value": "1050468352" }, { "timeStamp": "1521039850", "value": "1050218496" }, { "timeStamp": "1521039910", "value": "1050808320" }, { "timeStamp": "1521039970", "value": "1050738688" }, { "timeStamp": "1521040030", "value": "1050353664" }
+        { timeStamp: "1521035350", value: "1054859264" },
+        { timeStamp: "1521035410", value: "1054396416" },
+        { timeStamp: "1521035470", value: "1052774400" },
+        { timeStamp: "1521035530", value: "1051287552" },
+        { timeStamp: "1521035590", value: "1051049984" },
+        { timeStamp: "1521035650", value: "1050828800" },
+        { timeStamp: "1521035710", value: "1050701824" },
+        { timeStamp: "1521035770", value: "1050853376" },
+        { timeStamp: "1521035830", value: "1050984448" },
+        { timeStamp: "1521035890", value: "1052344320" },
+        { timeStamp: "1521035950", value: "1052409856" },
+        { timeStamp: "1521036010", value: "1051508736" },
+        { timeStamp: "1521036070", value: "1052073984" },
+        { timeStamp: "1521036130", value: "1051918336" },
+        { timeStamp: "1521036190", value: "1052385280" },
+        { timeStamp: "1521036250", value: "1052311552" },
+        { timeStamp: "1521036310", value: "1051865088" },
+        { timeStamp: "1521036370", value: "1051783168" },
+        { timeStamp: "1521036430", value: "1052086272" },
+        { timeStamp: "1521036490", value: "1051967488" },
+        { timeStamp: "1521036550", value: "1052356608" },
+        { timeStamp: "1521036610", value: "1053011968" },
+        { timeStamp: "1521036670", value: "1052635136" },
+        { timeStamp: "1521036730", value: "1052401664" },
+        { timeStamp: "1521036790", value: "1052352512" },
+        { timeStamp: "1521036850", value: "1052794880" },
+        { timeStamp: "1521036969", value: "1052479488" },
+        { timeStamp: "1521036970", value: "1052004352" },
+        { timeStamp: "1521037030", value: "1052110848" },
+        { timeStamp: "1521037090", value: "1052020736" },
+        { timeStamp: "1521037150", value: "1051664384" },
+        { timeStamp: "1521037210", value: "1052082176" },
+        { timeStamp: "1521037270", value: "1051553792" },
+        { timeStamp: "1521037330", value: "1051275264" },
+        { timeStamp: "1521037390", value: "1051238400" },
+        { timeStamp: "1521037450", value: "1051475968" },
+        { timeStamp: "1521037510", value: "1051070464" },
+        { timeStamp: "1521037570", value: "1051054080" },
+        { timeStamp: "1521037630", value: "1051406336" },
+        { timeStamp: "1521037690", value: "1050865664" },
+        { timeStamp: "1521037750", value: "1051213824" },
+        { timeStamp: "1521037810", value: "1051189248" },
+        { timeStamp: "1521037870", value: "1051295744" },
+        { timeStamp: "1521037930", value: "1051107328" },
+        { timeStamp: "1521037990", value: "1051217920" },
+        { timeStamp: "1521038050", value: "1051136000" },
+        { timeStamp: "1521038110", value: "1051676672" },
+        { timeStamp: "1521038170", value: "1051357184" },
+        { timeStamp: "1521038230", value: "1051066368" },
+        { timeStamp: "1521038290", value: "1051258880" },
+        { timeStamp: "1521038350", value: "1051332608" },
+        { timeStamp: "1521038410", value: "1051439104" },
+        { timeStamp: "1521038470", value: "1050816512" },
+        { timeStamp: "1521038530", value: "1051115520" },
+        { timeStamp: "1521038590", value: "1051176960" },
+        { timeStamp: "1521038650", value: "1051226112" },
+        { timeStamp: "1521038710", value: "1050923008" },
+        { timeStamp: "1521038770", value: "1050902528" },
+        { timeStamp: "1521038830", value: "1050947584" },
+        { timeStamp: "1521038890", value: "1051119616" },
+        { timeStamp: "1521038950", value: "1051176960" },
+        { timeStamp: "1521039010", value: "1051066368" },
+        { timeStamp: "1521039070", value: "1050914816" },
+        { timeStamp: "1521039130", value: "1050693632" },
+        { timeStamp: "1521039190", value: "1050537984" },
+        { timeStamp: "1521039250", value: "1050599424" },
+        { timeStamp: "1521039310", value: "1050451968" },
+        { timeStamp: "1521039370", value: "1050341376" },
+        { timeStamp: "1521039430", value: "1050501120" },
+        { timeStamp: "1521039490", value: "1050443776" },
+        { timeStamp: "1521039550", value: "1050529792" },
+        { timeStamp: "1521039610", value: "1049874432" },
+        { timeStamp: "1521039670", value: "1050357760" },
+        { timeStamp: "1521039730", value: "1050472448" },
+        { timeStamp: "1521039790", value: "1050468352" },
+        { timeStamp: "1521039850", value: "1050218496" },
+        { timeStamp: "1521039910", value: "1050808320" },
+        { timeStamp: "1521039970", value: "1050738688" },
+        { timeStamp: "1521040030", value: "1050353664" }
       ],
       options: [],
 
       //items need to be rendered
       itemIds: [],
+      //items: []
+      items: [
+        {
+          label: "CPU",
+          spread: false,
+          children: [
+            {
+              label: "cpu load of 1",
+              data: [
+                { timeStamp: "1521035350", value: "1054859264" },
+                { timeStamp: "1521035410", value: "1054396416" },
+                { timeStamp: "1521035470", value: "1052774400" },
+                { timeStamp: "1521035530", value: "1051287552" },
+                { timeStamp: "1521035590", value: "1051049984" },
+                { timeStamp: "1521035650", value: "1050828800" },
+                { timeStamp: "1521035710", value: "1050701824" },
+                { timeStamp: "1521035770", value: "1050853376" },
+                { timeStamp: "1521035830", value: "1050984448" },
+                { timeStamp: "1521035890", value: "1052344320" },
+                { timeStamp: "1521035950", value: "1052409856" },
+                { timeStamp: "1521036010", value: "1051508736" },
+                { timeStamp: "1521036070", value: "1052073984" },
+                { timeStamp: "1521036130", value: "1051918336" },
+                { timeStamp: "1521036190", value: "1052385280" },
+                { timeStamp: "1521036250", value: "1052311552" },
+                { timeStamp: "1521036310", value: "1051865088" },
+                { timeStamp: "1521036370", value: "1051783168" },
+                { timeStamp: "1521036430", value: "1052086272" },
+                { timeStamp: "1521036490", value: "1051967488" },
+                { timeStamp: "1521036550", value: "1052356608" },
+                { timeStamp: "1521036610", value: "1053011968" },
+                { timeStamp: "1521036670", value: "1052635136" },
+                { timeStamp: "1521036730", value: "1052401664" },
+                { timeStamp: "1521036790", value: "1052352512" },
+                { timeStamp: "1521036850", value: "1052794880" },
+                { timeStamp: "1521036969", value: "1052479488" },
+                { timeStamp: "1521036970", value: "1052004352" },
+                { timeStamp: "1521037030", value: "1052110848" },
+                { timeStamp: "1521037090", value: "1052020736" },
+                { timeStamp: "1521037150", value: "1051664384" },
+                { timeStamp: "1521037210", value: "1052082176" },
+                { timeStamp: "1521037270", value: "1051553792" },
+                { timeStamp: "1521037330", value: "1051275264" },
+                { timeStamp: "1521037390", value: "1051238400" },
+                { timeStamp: "1521037450", value: "1051475968" },
+                { timeStamp: "1521037510", value: "1051070464" },
+                { timeStamp: "1521037570", value: "1051054080" },
+                { timeStamp: "1521037630", value: "1051406336" },
+                { timeStamp: "1521037690", value: "1050865664" },
+                { timeStamp: "1521037750", value: "1051213824" },
+                { timeStamp: "1521037810", value: "1051189248" },
+                { timeStamp: "1521037870", value: "1051295744" },
+                { timeStamp: "1521037930", value: "1051107328" },
+                { timeStamp: "1521037990", value: "1051217920" },
+                { timeStamp: "1521038050", value: "1051136000" },
+                { timeStamp: "1521038110", value: "1051676672" },
+                { timeStamp: "1521038170", value: "1051357184" },
+                { timeStamp: "1521038230", value: "1051066368" },
+                { timeStamp: "1521038290", value: "1051258880" },
+                { timeStamp: "1521038350", value: "1051332608" },
+                { timeStamp: "1521038410", value: "1051439104" },
+                { timeStamp: "1521038470", value: "1050816512" },
+                { timeStamp: "1521038530", value: "1051115520" },
+                { timeStamp: "1521038590", value: "1051176960" },
+                { timeStamp: "1521038650", value: "1051226112" },
+                { timeStamp: "1521038710", value: "1050923008" },
+                { timeStamp: "1521038770", value: "1050902528" },
+                { timeStamp: "1521038830", value: "1050947584" },
+                { timeStamp: "1521038890", value: "1051119616" },
+                { timeStamp: "1521038950", value: "1051176960" },
+                { timeStamp: "1521039010", value: "1051066368" },
+                { timeStamp: "1521039070", value: "1050914816" },
+                { timeStamp: "1521039130", value: "1050693632" },
+                { timeStamp: "1521039190", value: "1050537984" },
+                { timeStamp: "1521039250", value: "1050599424" },
+                { timeStamp: "1521039310", value: "1050451968" },
+                { timeStamp: "1521039370", value: "1050341376" },
+                { timeStamp: "1521039430", value: "1050501120" },
+                { timeStamp: "1521039490", value: "1050443776" },
+                { timeStamp: "1521039550", value: "1050529792" },
+                { timeStamp: "1521039610", value: "1049874432" },
+                { timeStamp: "1521039670", value: "1050357760" },
+                { timeStamp: "1521039730", value: "1050472448" },
+                { timeStamp: "1521039790", value: "1050468352" },
+                { timeStamp: "1521039850", value: "1050218496" },
+                { timeStamp: "1521039910", value: "1050808320" },
+                { timeStamp: "1521039970", value: "1050738688" },
+                { timeStamp: "1521040030", value: "1050353664" }
+              ],
+              rendered: false,
+              chartOptions: []
+            },
+            {
+              label: "cpu load of 2",
+              data: [
+                { timeStamp: "1521035350", value: "1054859264" },
+                { timeStamp: "1521035410", value: "1054396416" },
+                { timeStamp: "1521035470", value: "1052774400" },
+                { timeStamp: "1521035530", value: "1051287552" },
+                { timeStamp: "1521035590", value: "1051049984" },
+                { timeStamp: "1521035650", value: "1050828800" },
+                { timeStamp: "1521035710", value: "1050701824" },
+                { timeStamp: "1521035770", value: "1050853376" },
+                { timeStamp: "1521035830", value: "1050984448" },
+                { timeStamp: "1521035890", value: "1052344320" },
+                { timeStamp: "1521035950", value: "1052409856" },
+                { timeStamp: "1521036010", value: "1051508736" },
+                { timeStamp: "1521036070", value: "1052073984" },
+                { timeStamp: "1521036130", value: "1051918336" },
+                { timeStamp: "1521036190", value: "1052385280" },
+                { timeStamp: "1521036250", value: "1052311552" },
+                { timeStamp: "1521036310", value: "1051865088" },
+                { timeStamp: "1521036370", value: "1051783168" },
+                { timeStamp: "1521036430", value: "1052086272" },
+                { timeStamp: "1521036490", value: "1051967488" },
+                { timeStamp: "1521036550", value: "1052356608" },
+                { timeStamp: "1521036610", value: "1053011968" },
+                { timeStamp: "1521036670", value: "1052635136" },
+                { timeStamp: "1521036730", value: "1052401664" },
+                { timeStamp: "1521036790", value: "1052352512" },
+                { timeStamp: "1521036850", value: "1052794880" },
+                { timeStamp: "1521036969", value: "1052479488" },
+                { timeStamp: "1521036970", value: "1052004352" },
+                { timeStamp: "1521037030", value: "1052110848" },
+                { timeStamp: "1521037090", value: "1052020736" },
+                { timeStamp: "1521037150", value: "1051664384" },
+                { timeStamp: "1521037210", value: "1052082176" },
+                { timeStamp: "1521037270", value: "1051553792" },
+                { timeStamp: "1521037330", value: "1051275264" },
+                { timeStamp: "1521037390", value: "1051238400" },
+                { timeStamp: "1521037450", value: "1051475968" },
+                { timeStamp: "1521037510", value: "1051070464" },
+                { timeStamp: "1521037570", value: "1051054080" },
+                { timeStamp: "1521037630", value: "1051406336" },
+                { timeStamp: "1521037690", value: "1050865664" },
+                { timeStamp: "1521037750", value: "1051213824" },
+                { timeStamp: "1521037810", value: "1051189248" },
+                { timeStamp: "1521037870", value: "1051295744" },
+                { timeStamp: "1521037930", value: "1051107328" },
+                { timeStamp: "1521037990", value: "1051217920" },
+                { timeStamp: "1521038050", value: "1051136000" },
+                { timeStamp: "1521038110", value: "1051676672" },
+                { timeStamp: "1521038170", value: "1051357184" },
+                { timeStamp: "1521038230", value: "1051066368" },
+                { timeStamp: "1521038290", value: "1051258880" },
+                { timeStamp: "1521038350", value: "1051332608" },
+                { timeStamp: "1521038410", value: "1051439104" },
+                { timeStamp: "1521038470", value: "1050816512" },
+                { timeStamp: "1521038530", value: "1051115520" },
+                { timeStamp: "1521038590", value: "1051176960" },
+                { timeStamp: "1521038650", value: "1051226112" },
+                { timeStamp: "1521038710", value: "1050923008" },
+                { timeStamp: "1521038770", value: "1050902528" },
+                { timeStamp: "1521038830", value: "1050947584" },
+                { timeStamp: "1521038890", value: "1051119616" },
+                { timeStamp: "1521038950", value: "1051176960" },
+                { timeStamp: "1521039010", value: "1051066368" },
+                { timeStamp: "1521039070", value: "1050914816" },
+                { timeStamp: "1521039130", value: "1050693632" },
+                { timeStamp: "1521039190", value: "1050537984" },
+                { timeStamp: "1521039250", value: "1050599424" },
+                { timeStamp: "1521039310", value: "1050451968" },
+                { timeStamp: "1521039370", value: "1050341376" },
+                { timeStamp: "1521039430", value: "1050501120" },
+                { timeStamp: "1521039490", value: "1050443776" },
+                { timeStamp: "1521039550", value: "1050529792" },
+                { timeStamp: "1521039610", value: "1049874432" },
+                { timeStamp: "1521039670", value: "1050357760" },
+                { timeStamp: "1521039730", value: "1050472448" },
+                { timeStamp: "1521039790", value: "1050468352" },
+                { timeStamp: "1521039850", value: "1050218496" },
+                { timeStamp: "1521039910", value: "1050808320" },
+                { timeStamp: "1521039970", value: "1050738688" },
+                { timeStamp: "1521040030", value: "1050353664" }
+              ],
+              rendered: false,
+              chartOptions: []
+            }
+          ]
+        },
+        {
+          label: "MEMORY",
+          spread: false,
+          children: [
+            {
+              label: "memory used",
+              data: [],
+              rendered: false,
+              chartOptions: []
+            }
+          ]
+        },
+        {
+          label: "INODE",
+          spread: false,
+          children: [
+            {
+              label: "inode used",
+              data: [],
+              rendered: false,
+              chartOptions: []
+            }
+          ]
+        },
+        {
+          label: "DISK",
+          spread: false,
+          children: [
+            {
+              label: "disk used",
+              data: [],
+              rendered: false,
+              chartOptions: []
+            }
+          ]
+        },
+        {
+          label: "NETWORK",
+          spread: false,
+          children: [],
+          rendered: false
+        },
+        {
+          label: "PROCESS",
+          spread: false,
+          children: [],
+          rendered: false
+        }
+      ],
 
       itemId: "28330",
       valueType: "3",
       timeFrom: "",
-      timeTill: ""
+      timeTill: "",
+
+      defaultProps: {
+        children: "children",
+        label: "label"
+      }
     };
   },
   methods: {
+    handleCheckChange: function(data, checked, indeterminate) {
+       if(data.data !== undefined) {
+         let option = this.getOption(data.data,data.label)
+         data.chartOptions = option
+         data.rendered = !data.rendered
+       } else {
+        if(!data.spread) {
+           let that = this
+           data.children.forEach(function(element) {
+             element.chartOptions = that.getOption(element.data,element.label)
+             element.rendered = !element.rendered
+           })
+         }
+      }
+    },
+    handleNodeExpand:function(data,node,self) {
+      data.spread = !data.spread
+    },
+    handleNodeCollapse:function(data,node,self) {
+      data.spread = !data.spread
+    },
     getItemData: function() {
       this.$http
         .get(zabbixUrl + "/itemData", {
@@ -49,30 +398,14 @@ export default {
           }
         );
     },
-
-    //render the charts
-    myRender_Todo: function() {
-      //TODO:get data of items in itemIds[],push them into optionData[]
-      this.setOptions();
-    },
-    myRender: function() {
-      for(var i = 0;i < 4;i++){
-        this.optionData.push([
-          { "timeStamp": "1521035350", "value": "1054859264" }, { "timeStamp": "1521035410", "value": "1054396416" }, { "timeStamp": "1521035470", "value": "1052774400" }, { "timeStamp": "1521035530", "value": "1051287552" }, { "timeStamp": "1521035590", "value": "1051049984" }, { "timeStamp": "1521035650", "value": "1050828800" }, { "timeStamp": "1521035710", "value": "1050701824" }, { "timeStamp": "1521035770", "value": "1050853376" }, { "timeStamp": "1521035830", "value": "1050984448" }, { "timeStamp": "1521035890", "value": "1052344320" }, { "timeStamp": "1521035950", "value": "1052409856" }, { "timeStamp": "1521036010", "value": "1051508736" }, { "timeStamp": "1521036070", "value": "1052073984" }, { "timeStamp": "1521036130", "value": "1051918336" }, { "timeStamp": "1521036190", "value": "1052385280" }, { "timeStamp": "1521036250", "value": "1052311552" }, { "timeStamp": "1521036310", "value": "1051865088" }, { "timeStamp": "1521036370", "value": "1051783168" }, { "timeStamp": "1521036430", "value": "1052086272" }, { "timeStamp": "1521036490", "value": "1051967488" }, { "timeStamp": "1521036550", "value": "1052356608" }, { "timeStamp": "1521036610", "value": "1053011968" }, { "timeStamp": "1521036670", "value": "1052635136" }, { "timeStamp": "1521036730", "value": "1052401664" }, { "timeStamp": "1521036790", "value": "1052352512" }, { "timeStamp": "1521036850", "value": "1052794880" }, { "timeStamp": "1521036969", "value": "1052479488" }, { "timeStamp": "1521036970", "value": "1052004352" }, { "timeStamp": "1521037030", "value": "1052110848" }, { "timeStamp": "1521037090", "value": "1052020736" }, { "timeStamp": "1521037150", "value": "1051664384" }, { "timeStamp": "1521037210", "value": "1052082176" }, { "timeStamp": "1521037270", "value": "1051553792" }, { "timeStamp": "1521037330", "value": "1051275264" }, { "timeStamp": "1521037390", "value": "1051238400" }, { "timeStamp": "1521037450", "value": "1051475968" }, { "timeStamp": "1521037510", "value": "1051070464" }, { "timeStamp": "1521037570", "value": "1051054080" }, { "timeStamp": "1521037630", "value": "1051406336" }, { "timeStamp": "1521037690", "value": "1050865664" }, { "timeStamp": "1521037750", "value": "1051213824" }, { "timeStamp": "1521037810", "value": "1051189248" }, { "timeStamp": "1521037870", "value": "1051295744" }, { "timeStamp": "1521037930", "value": "1051107328" }, { "timeStamp": "1521037990", "value": "1051217920" }, { "timeStamp": "1521038050", "value": "1051136000" }, { "timeStamp": "1521038110", "value": "1051676672" }, { "timeStamp": "1521038170", "value": "1051357184" }, { "timeStamp": "1521038230", "value": "1051066368" }, { "timeStamp": "1521038290", "value": "1051258880" }, { "timeStamp": "1521038350", "value": "1051332608" }, { "timeStamp": "1521038410", "value": "1051439104" }, { "timeStamp": "1521038470", "value": "1050816512" }, { "timeStamp": "1521038530", "value": "1051115520" }, { "timeStamp": "1521038590", "value": "1051176960" }, { "timeStamp": "1521038650", "value": "1051226112" }, { "timeStamp": "1521038710", "value": "1050923008" }, { "timeStamp": "1521038770", "value": "1050902528" }, { "timeStamp": "1521038830", "value": "1050947584" }, { "timeStamp": "1521038890", "value": "1051119616" }, { "timeStamp": "1521038950", "value": "1051176960" }, { "timeStamp": "1521039010", "value": "1051066368" }, { "timeStamp": "1521039070", "value": "1050914816" }, { "timeStamp": "1521039130", "value": "1050693632" }, { "timeStamp": "1521039190", "value": "1050537984" }, { "timeStamp": "1521039250", "value": "1050599424" }, { "timeStamp": "1521039310", "value": "1050451968" }, { "timeStamp": "1521039370", "value": "1050341376" }, { "timeStamp": "1521039430", "value": "1050501120" }, { "timeStamp": "1521039490", "value": "1050443776" }, { "timeStamp": "1521039550", "value": "1050529792" }, { "timeStamp": "1521039610", "value": "1049874432" }, { "timeStamp": "1521039670", "value": "1050357760" }, { "timeStamp": "1521039730", "value": "1050472448" }, { "timeStamp": "1521039790", "value": "1050468352" }, { "timeStamp": "1521039850", "value": "1050218496" }, { "timeStamp": "1521039910", "value": "1050808320" }, { "timeStamp": "1521039970", "value": "1050738688" }, { "timeStamp": "1521040030", "value": "1050353664" }
-        ]);
-      }
-
-      this.setOptions();
-    },
     setOptions: function() {
       for (var i = 0; i < this.optionData.length; i = i + 1) {
         let option = this.getOption(this.optionData[i]);
         this.options.push(option);
       }
-      console.log(this.options)
+      console.log(this.options);
     },
-    //TODO:add parameter for name
-    getOption: function(data) {
+    getOption: function(data,title) {
       var newData = [];
       data.forEach(function(element) {
         newData.push([element.timeStamp * 1000, element.value]);
@@ -80,7 +413,7 @@ export default {
       return {
         title: {
           left: "center",
-          text: "Zabbix data"
+          text: title
         },
         tooltip: {
           trigger: "axis"
@@ -134,15 +467,34 @@ export default {
           }
         ]
       };
-    }
+    },
   },
   mounted() {
     //this.setOptions()
+    window.onresize = function() {
+      var myCharts = []
+      myCharts = document.getElementsByName("myCharts")
+      myCharts.forEach(function(element) {
+        element.__vue__.resize()
+      })
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .el_tree_style {
+    padding-right: 10px;
+    background-color: #f3f3f4;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  #itemDataPage{
+    display: flex;
+  }
+  .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: #1ab394;
+    border-color: #1ab394
+  }
 </style>
