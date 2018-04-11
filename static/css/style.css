@@ -2832,6 +2832,7 @@ a.forum-item-title:hover {
 }
 /* Tabs */
 .tabs-container .panel-body {
+  width: 100%;
   background: #fff;
   border: 1px solid #e7eaec;
   border-radius: 2px;
@@ -2850,6 +2851,7 @@ a.forum-item-title:hover {
   margin-bottom: -1px;
 }
 .tabs-container .tab-pane .panel-body {
+  widows: 100%;
   border-top: none;
 }
 .tabs-container .nav-tabs > li.active > a,

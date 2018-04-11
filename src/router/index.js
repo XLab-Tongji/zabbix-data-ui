@@ -19,7 +19,7 @@ export default new Router({
       component: ItemPage
     },
     {
-      path: '/3',
+      path: '/3/:hostid',
       name: 'ItemDataPage',
       component: ItemDataPage
     }
