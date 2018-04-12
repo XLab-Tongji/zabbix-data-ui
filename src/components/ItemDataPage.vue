@@ -793,6 +793,7 @@ export default {
   background-color: #f3f3f4;
   display: inline-block;
   margin-right: 10px;
+  height: 100%;
 }
 #itemDataPage {
   display: flex;
