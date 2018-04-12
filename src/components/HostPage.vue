@@ -1,28 +1,46 @@
 <template>
   <div style="width:100%" id="hostPage">
-    <div class="widget lazur-bg p-xl hostblock" v-for="host in hosts" @click="goItems(host.hostid)">
-
-      <h2>
-          {{host.host}}
-      </h2>
-      <ul class="list-unstyled m-t-md">
-          <li>
-              <span class="fa fa-at m-r-xs"></span>
-              <label>id:</label>
-              {{host.hostid}}
-          </li>
-          <li>
-              <span class="fa fa-desktop m-r-xs"></span>
-              <label>Name:</label>
-              {{host.name}}
-          </li>
-          <li>
-              <span class="fa fa-file-text m-r-xs"></span>
-              <label>Description:</label>
-              {{host.description}}
-          </li>
-      </ul>
-
+    <div style="width:100%;display: flex">
+      <div >
+        <el-tree class="el_tree_style"
+          :data="hosts"
+          show-checkbox
+          node-key="id"
+          :props="defaultProps"
+          ref="tree"
+          @check-change="handleCheckChange"
+          @node-expand="handleNodeExpand"
+          @node-collapse="handleNodeCollapse">
+        </el-tree>
+      </div>
+      <div style="width:100%">
+        <div v-for="host in hosts" style="width:100%">
+          <div class="hostblock" v-for="child in host.children" v-if="child.rendered" style="width:100%;">
+            <div class=" widget lazur-bg p-xl" @click="goItemPage(child.hostid)">
+              <h2>
+                  {{child.host}}
+              </h2>
+              <ul class="list-unstyled m-t-md">
+                  <li>
+                      <span class="fa fa-at m-r-xs"></span>
+                      <label>id:</label>
+                      {{child.hostid}}
+                  </li>
+                  <li>
+                      <span class="fa fa-desktop m-r-xs"></span>
+                      <label>Name:</label>
+                      {{child.name}}
+                  </li>
+                  <li>
+                      <span class="fa fa-file-text m-r-xs"></span>
+                      <label>Description:</label>
+                      {{child.description}}
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,104 +50,420 @@ export default {
   name: "HostPage",
   data() {
     return {
-      //  hosts: null,
-
-      //  hosts: []
+      // hosts: [
+      //   {
+      //     label: null,
+      //     spread: null,
+      //     firstSpread: null,
+      //     isLeaf: null,
+      //     children: [
+      //       {
+      //         label: null,
+      //         hostid: null,
+      //         host: "",
+      //         name: "",
+      //         description: "",
+      //         rendered: null,
+      //         isLeaf: null,
+      //       }
+      //     ]
+      //   }
+      // ],
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
       hosts: [
         {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
+          label: "Proxy server 1",
+          spread: false,
+          firstSpread: false,
+          isLeaf: false,
+          children: [
+            {
+              label: "Host 1",
+              hostid: 10160,
+              host: "Host 1",
+              name: "Host 1",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 2",
+              hostid: 10160,
+              host: "Host 2",
+              name: "Host 2",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 3",
+              hostid: 10160,
+              host: "Host 3",
+              name: "Host 3",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 4",
+              hostid: 10160,
+              host: "Host 4",
+              name: "Host 4",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 6",
+              hostid: 10160,
+              host: "Host 6",
+              name: "Host 6",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 7",
+              hostid: 10160,
+              host: "Host 7",
+              name: "Host 7",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 8",
+              hostid: 10160,
+              host: "Host 8",
+              name: "Host 8",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+          ]
         },
         {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
+          label: "Proxy server 1",
+          spread: false,
+          firstSpread: false,
+          isLeaf: false,
+          children: [
+            {
+              label: "Host 1",
+              hostid: 10160,
+              host: "Host 1",
+              name: "Host 1",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 2",
+              hostid: 10160,
+              host: "Host 2",
+              name: "Host 2",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 3",
+              hostid: 10160,
+              host: "Host 3",
+              name: "Host 3",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 4",
+              hostid: 10160,
+              host: "Host 4",
+              name: "Host 4",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 6",
+              hostid: 10160,
+              host: "Host 6",
+              name: "Host 6",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 7",
+              hostid: 10160,
+              host: "Host 7",
+              name: "Host 7",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 8",
+              hostid: 10160,
+              host: "Host 8",
+              name: "Host 8",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+          ]
         },
         {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
+          label: "Proxy server 1",
+          spread: false,
+          firstSpread: false,
+          isLeaf: false,
+          children: [
+            {
+              label: "Host 1",
+              hostid: 10160,
+              host: "Host 1",
+              name: "Host 1",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 2",
+              hostid: 10160,
+              host: "Host 2",
+              name: "Host 2",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 3",
+              hostid: 10160,
+              host: "Host 3",
+              name: "Host 3",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 4",
+              hostid: 10160,
+              host: "Host 4",
+              name: "Host 4",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 6",
+              hostid: 10160,
+              host: "Host 6",
+              name: "Host 6",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 7",
+              hostid: 10160,
+              host: "Host 7",
+              name: "Host 7",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 8",
+              hostid: 10160,
+              host: "Host 8",
+              name: "Host 8",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+          ]
         },
         {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
-        },
-        {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
-        },
-        {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
-        },
-        {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
-        },
-        {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
-        },
-        {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
-        },
-        {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
-        },
-        {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
-        },
-        {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
-        },
-        {
-          hostid: 10160,
-          host: "Zabbix server",
-          name: "Zabbix server",
-          description: "The Zabbix monitoring server."
-        },
-        {
-          hostid: 10167,
-          host: "Linux server",
-          name: "Linux server",
-          description: ""
+          label: "Proxy server 1",
+          spread: false,
+          firstSpread: false,
+          isLeaf: false,
+          children: [
+            {
+              label: "Host 1",
+              hostid: 10160,
+              host: "Host 1",
+              name: "Host 1",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 2",
+              hostid: 10160,
+              host: "Host 2",
+              name: "Host 2",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 3",
+              hostid: 10160,
+              host: "Host 3",
+              name: "Host 3",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 4",
+              hostid: 10160,
+              host: "Host 4",
+              name: "Host 4",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 5",
+              hostid: 10160,
+              host: "Host 5",
+              name: "Host 5",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 6",
+              hostid: 10160,
+              host: "Host 6",
+              name: "Host 6",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 7",
+              hostid: 10160,
+              host: "Host 7",
+              name: "Host 7",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+            {
+              label: "Host 8",
+              hostid: 10160,
+              host: "Host 8",
+              name: "Host 8",
+              description: "The Zabbix monitoring server.",
+              rendered: false,
+              isLeaf: true,
+            },
+          ]
         }
       ]
     };
   },
   methods: {
-    goItems: function(hostid) {
+    goItemPage: function(hostid) {
       this.$router.push({ path: '/3/'+hostid })
-    }
+    },
+     handleCheckChange: function(data, checked, indeterminate) {
+      console.log("yes");
+      if (data.isLeaf) {
+        //TODO:调用接口
+        data.rendered = !data.rendered;
+      } else {
+        if (!data.spread && !data.firstSpread) {
+          let that = this;
+          data.children.forEach(function(element) {
+            element.rendered = !element.rendered;
+          });
+        }
+      }
+    },
+    handleNodeExpand: function(data, node, self) {
+      if (!data.firstSpread) data.firstSpread = !data.firstSpread;
+      data.spread = !data.spread;
+      console.log(data.spread);
+    },
+    handleNodeCollapse: function(data, node, self) {
+      data.spread = !data.spread;
+      console.log(data.spread);
+    },
   },
   mounted() {
     // get zabbix hosts
+    console.log(this.$route.param)
     this.$http.get(zabbixUrl + "/hosts").then(
       function(response) {
         console.log(response);
@@ -146,9 +480,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .hostblock {
-    min-width: 30%;
-    max-width: 40%;
+    min-width: 25%;
+    max-width: 30%;
     display:inline-block;
     margin:10px
+  }
+  .el_tree_style {
+    padding-right: 10px;
+    background-color: #f3f3f4;
+    display: inline-block;
+    margin-right: 10px;
+    height: 100%;
   }
 </style>
