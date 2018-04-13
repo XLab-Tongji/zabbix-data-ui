@@ -1,6 +1,6 @@
 <template>
   <div id = "clusterPage">
-    <div class=" widget lazur-bg p-xl" v-for="server in servers" @click="goHostPage()">
+    <div class=" widget lazur-bg p-xl" v-for="server in servers" @click="goHostPage(server.ip+server.port)">
       <h2>
           {{server.host}}
       </h2>
@@ -76,8 +76,8 @@ export default {
     }
   },
   methods: {
-    goHostPage: function() {
-      this.$router.push({ path: '/2' })
+    goHostPage: function(url) {
+      this.$router.push({ path: '/2/' + url})
     }
   },
   mounted() {

@@ -15,7 +15,7 @@ export default new Router({
       component: ClusterPage
     },
     {
-      path: '/2',
+      path: '/2/:url',
       name: 'HostPage',
       component: HostPage
     },
