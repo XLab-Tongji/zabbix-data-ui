@@ -22,9 +22,9 @@
             </div>
             <div style="width:100%;">
               <div v-for="item in items" style="width:100%;">
-                <div v-for="child in item.children" style="width:50%;display:inline-block">
+                <div v-for="child in item.children" v-if="child.rendered" style="width:50%;display:inline-block">
       
-                    <eChart v-if="child.rendered" :options="child.chartOptions" style="width:100%" name="myCharts"></eChart>
+                    <eChart :options="child.chartOptions" style="width:100%" name="myCharts"></eChart>
     
                 </div>
               </div>
@@ -35,7 +35,7 @@
           <div class="panel-body" style="width:100%  ;">
     
               <div v-for="item in items" style="width:100%  ;">
-                <div v-for="child in item.children" style="width:100% ">
+                <div v-for="child in item.children" v-if="child.rendered" style="width:100% ">
                   <div v-if="child.rendered" style="width:100%" >
                     <eChart :options="child.chartDetailOptions" style="width:100%  ;" name="myCharts"></eChart>
                   </div>
