@@ -1,18 +1,18 @@
 <template>
   <div id = "clusterPage">
-    <div class=" widget lazur-bg p-xl" v-for="server in servers" @click="goHostPage(server.ip+server.port)">
+    <div class=" widget lazur-bg p-xl" v-for="server in servers" @click="goHostPage(server.ip+':'+server.port)">
       <h2>
           {{server.host}}
       </h2>
       <ul class="list-unstyled m-t-md">
           <li>
             <span class="fa fa-at m-r-xs"></span>
-            <label>ip:</label>
+            <label>Ip:</label>
             {{server.ip}}
           </li>
           <li>
             <span class="fa fa-at m-r-xs"></span>
-            <label>port:</label>
+            <label>Port:</label>
             {{server.port}}
           </li>
           <li>

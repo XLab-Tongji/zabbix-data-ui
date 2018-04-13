@@ -177,7 +177,7 @@ export default {
   },
   mounted() {
     // get zabbix hosts
-    console.log(this.$route.param)
+    console.log(this.$route.params)
     this.$http.get(zabbixUrl + "/hosts").then(
       function(response) {
         console.log(response);
