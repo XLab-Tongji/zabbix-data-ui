@@ -1,13 +1,13 @@
 <template>
-  <div style="width:100%" id="itemDataPage">
-    <div class="tabs-container" style="width: 100%">
+  <div id="itemDataPage">
+    <div class="tabs-container" style="width:100%" >
       <ul class="nav nav-tabs">
         <li class="active" style="width: 50%" @click="myRefresh"><a data-toggle="tab" href="#filter" aria-expanded="false"> <i class="fa fa-filter"> &nbsp;选择你需要展示的监控项</i></a></li>
         <li class="" style="width: 50%" @click="myRefresh"><a data-toggle="tab" href="#charts" aria-expanded="true"><i class="fa fa-line-chart"> &nbsp;监控项图表全览</i></a></li>
       </ul>
-      <div class="tab-content" style="width:100%  ;">
-        <div id="filter" class="tab-pane active" style="width:100%">
-          <div class="panel-body" style="width:100%;display:flex;">
+      <div class="tab-content" >
+        <div id="filter" class="tab-pane active">
+          <div class="panel-body" style="display:flex;">
             <div>
               <el-tree class="el_tree_style"
                 :data="items"
@@ -20,11 +20,11 @@
                 @node-collapse="handleNodeCollapse">
               </el-tree>
             </div>
-            <div style="width:100%;">
-              <div v-for="item in items" style="width:100%;">
-                <div v-for="child in item.children" v-if="child.rendered" style="width:50%;display:inline-block">
+            <div >
+              <div v-for="item in items" style="width:100%">
+                <div v-for="child in item.children" v-if="child.rendered" style="width:50%;display:inline-block;">
       
-                    <eChart :options="child.chartOptions" style="width:100%" name="myCharts"></eChart>
+                    <eChart :options="child.chartOptions" name="myCharts"></eChart>
     
                 </div>
               </div>
@@ -36,7 +36,7 @@
     
               <div v-for="item in items" style="width:100%  ;">
                 <div v-for="child in item.children" v-if="child.rendered" style="width:100% ">
-                  <div v-if="child.rendered" style="width:100%" >
+                  <div v-if="child.rendered" style="width:100%;padding:20px;" >
                     <eChart :options="child.chartDetailOptions" style="width:100%  ;" name="myCharts"></eChart>
                   </div>
                 </div>
@@ -46,44 +46,6 @@
         </div>
     </div>
     </div>
-
-    <!-- <el-tabs type="border-card" style="width:100%"  @tab-click="myRefresh">
-      
-      <el-tab-pane label="选择监控项" style="width:100%;">
-        <div style="widith:100%;display:flex">
-        <div>
-          <el-tree class="el_tree_style"
-            :data="items"
-            show-checkbox
-            node-key="id"
-            :props="defaultProps"
-            ref="tree"
-            @check-change="handleCheckChange"
-            @node-expand="handleNodeExpand"
-            @node-collapse="handleNodeCollapse">
-          </el-tree>
-        </div>
-        <div style="width:100%">
-          <div v-for="item in items" style="width:100%">
-            <div v-for="child in item.children" style="width:50%;display:inline-block">
-          
-                <eChart v-if="child.rendered" :options="child.chartOptions" style="width:100%" name="myCharts"></eChart>
-        
-            </div>
-          </div>
-        </div>
-        </div>
-     </el-tab-pane style="width:100%;">
-          <el-tab-pane label="图表全览" style="width:100%;" >
-            <div v-for="item in items" style="width:100% ;">
-                <div v-for="child in item.children" style="width:100% ;">
-                  <div v-if="child.rendered" style="width:100% ;" >
-                    <eChart :options="child.chartDetailOptions" style="width:100% ;" name="myCharts"></eChart>
-                  </div>
-                </div>
-            </div>
-          </el-tab-pane>
-    </el-tabs> -->
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-  <div id = "clusterPage">
-    <div class=" widget lazur-bg p-xl" v-for="server in servers" @click="goHostPage(server.ip+':'+server.port)">
+  <div id = "clusterPage" style="padding-bottom:30px">
+    <div class=" widget lazur-bg p-xl animated" v-bind:class="{ fadeOutRight:server.fadeActive }"  v-for="(server,index) in servers">
       <h2>
           {{server.host}}
       </h2>
@@ -26,6 +26,13 @@
             {{server.description}}
           </li>
       </ul>
+      <div style="display:inline-block">
+        <button type="button" class="btn btn-w-m btn-primary" @click="goHostPage(server.ip+':'+server.port)">Hosts</button>
+        <button type="button" class="btn btn-w-m btn-danger" @click="deleteCluster(server,index)">Delete</button>
+      </div>
+    </div>
+    <div class="addBtn">
+      <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addCluster"><i class="fa fa-plus"></i></button>
     </div>
   </div>
 </template>
@@ -39,38 +46,50 @@ export default {
         {
           ip: "127.0.0.1",
           port: "8080",
-          name: "Server 1",
-          description: "cluster server"
+          name: "Server 2",
+          description: "cluster server",
+
+          fadeActive: false
         },
         {
           ip: "127.0.0.1",
           port: "8080",
           name: "Server 1",
-          description: "cluster server"
+          description: "cluster server",
+
+          fadeActive: false
         },
         {
           ip: "127.0.0.1",
           port: "8080",
           name: "Server 1",
-          description: "cluster server"
+          description: "cluster server",
+
+          fadeActive: false
         },
         {
           ip: "127.0.0.1",
           port: "8080",
           name: "Server 1",
-          description: "cluster server"
+          description: "cluster server",
+
+          fadeActive: false
         },
         {
           ip: "127.0.0.1",
           port: "8080",
           name: "Server 1",
-          description: "cluster server"
+          description: "cluster server",
+
+          fadeActive: false
         },
         {
           ip: "127.0.0.1",
           port: "8080",
           name: "Server 1",
-          description: "cluster server"
+          description: "cluster server",
+
+          fadeActive: false
         },
       ]
     }
@@ -78,13 +97,29 @@ export default {
   methods: {
     goHostPage: function(url) {
       this.$router.push({ path: '/2/' + url})
+    },
+    deleteCluster: function(server,index) {
+      //TODO:调用接口、删除用户集群
+      server.fadeActive = true
+      let that = this
+      setTimeout(function() {
+        that.servers.splice(index,1)
+       },1000)
+    },
+    addCluster: function() {
+      this.$router.push({path: '/zabbixconfig'})
     }
   },
   mounted() {
+    //TODO:请求servers数据
   }
 }
 </script>
 
 <style scoped>
-
+  .addBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 30px;
+  }
 </style>

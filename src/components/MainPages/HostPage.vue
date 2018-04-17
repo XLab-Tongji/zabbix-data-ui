@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%" id="hostPage">
+  <div id="hostPage">
     <!-- <div style="width:100%;display: flex"> -->
       <!-- <div >
         <el-tree class="el_tree_style"
@@ -13,33 +13,34 @@
           @node-collapse="handleNodeCollapse">
         </el-tree>
       </div> -->
-      <div style="width:100%">
-        <div v-for="host in hosts" class="hostblock" style="width:100%">
-          <div class=" widget lazur-bg p-xl" @click="goItemPage(host.hostid)">
-            <h2>
-                {{host.host}}
-            </h2>
-            <ul class="list-unstyled m-t-md">
-              <li>
-                  <span class="fa fa-at m-r-xs"></span>
-                  <label>id:</label>
-                  {{host.hostid}}
-              </li>
-              <li>
-                  <span class="fa fa-desktop m-r-xs"></span>
-                  <label>Name:</label>
-                  {{host.name}}
-              </li>
-              <li>
-                  <span class="fa fa-file-text m-r-xs"></span>
-                  <label>Description:</label>
-                  {{host.description}}
-              </li>
-            </ul>
-          </div>
+      <div v-for="host in hosts" class="hostblock">
+        <div class=" widget lazur-bg p-xl" @click="goItemPage(host.hostid)">
+          <h2>
+              {{host.host}}
+          </h2>
+          <ul class="list-unstyled m-t-md">
+            <li>
+                <span class="fa fa-at m-r-xs"></span>
+                <label>id:</label>
+                {{host.hostid}}
+            </li>
+            <li>
+                <span class="fa fa-desktop m-r-xs"></span>
+                <label>Name:</label>
+                {{host.name}}
+            </li>
+            <li>
+                <span class="fa fa-file-text m-r-xs"></span>
+                <label>Description:</label>
+                {{host.description}}
+            </li>
+          </ul>
         </div>
       </div>
     <!-- </div> -->
+    <div class="addBtn">
+      <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addHost"><i class="fa fa-plus"></i></button>
+    </div>
   </div>
 </template>
 
@@ -151,6 +152,9 @@ export default {
     goItemPage: function(hostid) {
       this.$router.push({ path: '/3/'+hostid })
     },
+    addHost: function() {
+      
+    }
     //  handleCheckChange: function(data, checked, indeterminate) {
     //   console.log("yes");
     //   if (data.isLeaf) {
@@ -197,13 +201,13 @@ export default {
     min-width: 25%;
     max-width: 30%;
     display:inline-block;
-    margin:10px
+    margin:10px;
+    /* width: 100%; */
+    padding-bottom: 20px;
   }
-  .el_tree_style {
-    padding-right: 10px;
-    background-color: #f3f3f4;
-    display: inline-block;
-    margin-right: 10px;
-    height: 100%;
+  .addBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 30px;
   }
 </style>
