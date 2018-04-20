@@ -20,15 +20,15 @@
               IN+
             </div>
           </li>
-          <li class="active">
-            <a @click="showHostPage"><i class="fa fa-th-large"></i> <span class="nav-label">Main view</span></a>
+          <li :class="{ active:isZabbixPage }">
+            <a @click="showZabbixPage"><i class="fa fa-th-large"></i> <span class="nav-label">My zabbix</span></a>
           </li>
-          <li>
-            <a @click="showItemPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
+          <li :class="{ active:isIdentityPage }">
+            <a @click="showIdentityPage"><i class="fa fa-th-large"></i> <span class="nav-label">Identity</span> </a>
           </li>
-          <li>
+          <!-- <li>
             <a @click="showItemDataPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
-          </li>
+          </li> -->
 
         </ul>
 
@@ -76,12 +76,22 @@
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+      isZabbixPage: true,
+      isIdentityPage: false
+    }
+  },
   methods: {
-    showHostPage: function () {
+    showZabbixPage: function () {
       this.$router.push("/")
+      this.isZabbixPage = true
+      this.isIdentityPage = false
     },
-    showItemPage: function () {
+    showIdentityPage: function () {
       this.$router.push("/2")
+      this.isZabbixPage = false
+      this.isIdentityPage = true
     },
     showItemDataPage: function () {
       this.$router.push("/3")

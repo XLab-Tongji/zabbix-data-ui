@@ -14,12 +14,18 @@
         <div class="hr-line-dashed"></div>
         <div class="form-group"><label class="col-sm-2 control-label">Group</label>
 
-          <div class="col-sm-10"><input type="text" class="form-control" v-model="host_group"/></div>
+          <div class="col-sm-10">
+            <input type="text" disabled="disabled" class="form-control" v-model="host_group"/>
+            <button type="button" class="btn btn-primary btn-xs" style="float:right" @click="selectGroup">Select</button>
+          </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group"><label class="col-sm-2 control-label">Templates</label>
 
-          <div class="col-sm-10"><input type="text" class="form-control" v-model="host_templates"/></div>
+          <div class="col-sm-10">
+            <input type="text" disabled="disabled" class="form-control" v-model="host_templates"/>
+            <button type="button" class="btn btn-primary btn-xs" style="float:right" @click="selectTemplate">Select</button>
+          </div>
         </div>
         <div class="hr-line-dashed"></div>
         <div class="form-group"><label class="col-sm-2 control-label">Description</label>
@@ -42,25 +48,47 @@ name: 'hostConfigPage'
 export default {
   data() {
     return {
-      host_name: "",
+      host_name: "Host",
       host_group: "",
       host_templates: "",
-      host_description: ""
+      host_description: "My monitering host"
     }
   },
   methods: {
     cancel: function() {
-      host_name = "",
+      host_name = "Host",
       host_group = "",
       host_templates = "",
-      host_description = ""
+      host_description = "My monitering host"
     },
     successCreateHost: function() {
-      
+      //TODO:后端接口存储数据
+      let that = this
+      this.$router.push({name : 'SuccessAddHost',params : {ip: that.$route.params.ip, port: that.$route.params.port}})
+      toastr.success("添加成功")
+    },
+    selectGroup: function() {
+      this.$router.push({path: '/groupselect'})
+    },
+    selectTemplate: function() {
+      this.$router.push({path: '/templateselect'})
     }
   },
+  created() {
+    
+  },
   mounted() {
-
+    let that = this
+    this.$store.state.zabbixTemplate.zabbixTemplates.forEach(element => {
+        if(element.selected) {
+            that.host_templates = that.host_templates + element.name + ", "
+        }
+    })
+    this.$store.state.zabbixGroup.zabbixGroups.forEach(element => {
+        if(element.selected) {
+            that.host_group = that.host_group + element.name + ", "
+        }
+    })
   }
 }
 </script>

@@ -13,8 +13,8 @@
           @node-collapse="handleNodeCollapse">
         </el-tree>
       </div> -->
-      <div v-for="host in hosts" class="hostblock">
-        <div class=" widget lazur-bg p-xl" @click="goItemPage(host.hostid)">
+      <div v-for="(host,index) in hosts" class="hostblock animated" v-bind:class="{ fadeOutRight:host.fadeActive }">
+        <div class=" widget lazur-bg p-xl ">
           <h2>
               {{host.host}}
           </h2>
@@ -35,7 +35,12 @@
                 {{host.description}}
             </li>
           </ul>
+          <div style="display:inline-block">
+        <button type="button" class="btn btn-w-m btn-primary" @click="goItemPage(host.hostid)">Items</button>
+        <button type="button" class="btn btn-w-m btn-danger" @click="deleteHost(host,index)">Delete</button>
+      </div>
         </div>
+        
       </div>
     <!-- </div> -->
     <div class="addBtn">
@@ -79,8 +84,7 @@ export default {
           host: "Host 1",
           name: "Host 1",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 2",
@@ -88,8 +92,7 @@ export default {
           host: "Host 2",
           name: "Host 2",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 3",
@@ -97,8 +100,7 @@ export default {
           host: "Host 3",
           name: "Host 3",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 4",
@@ -106,8 +108,7 @@ export default {
           host: "Host 4",
           name: "Host 4",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 5",
@@ -115,8 +116,7 @@ export default {
           host: "Host 5",
           name: "Host 5",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 6",
@@ -124,8 +124,7 @@ export default {
           host: "Host 6",
           name: "Host 6",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 7",
@@ -133,8 +132,7 @@ export default {
           host: "Host 7",
           name: "Host 7",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
         {
           label: "Host 8",
@@ -142,8 +140,7 @@ export default {
           host: "Host 8",
           name: "Host 8",
           description: "The Zabbix monitoring server.",
-          rendered: false,
-          isLeaf: true,
+          fadeActive: false
         },
       ],
     };
@@ -153,7 +150,19 @@ export default {
       this.$router.push({ path: '/3/'+hostid })
     },
     addHost: function() {
-      
+      let that = this
+      this.$router.push({name: 'HostConfigPage', params: {ip: that.$route.params.ip, port: that.$route.params.port}})
+    },
+    goItemPage: function(hostid) {
+      this.$router.push({ path: '/3/'+hostid })
+    },
+    deleteHost: function(host, index) {
+      //TODO:调用接口删除主机信息
+      host.fadeActive = true
+      let that = this
+      setTimeout(function() {
+        that.hosts.splice(index,1)
+       },1000)
     }
     //  handleCheckChange: function(data, checked, indeterminate) {
     //   console.log("yes");
@@ -202,7 +211,6 @@ export default {
     max-width: 30%;
     display:inline-block;
     margin:10px;
-    /* width: 100%; */
     padding-bottom: 20px;
   }
   .addBtn {

@@ -27,7 +27,7 @@
           </li>
       </ul>
       <div style="display:inline-block">
-        <button type="button" class="btn btn-w-m btn-primary" @click="goHostPage(server.ip+':'+server.port)">Hosts</button>
+        <button type="button" class="btn btn-w-m btn-primary" @click="goHostPage(server.ip,server.port)">Hosts</button>
         <button type="button" class="btn btn-w-m btn-danger" @click="deleteCluster(server,index)">Delete</button>
       </div>
     </div>
@@ -95,8 +95,8 @@ export default {
     }
   },
   methods: {
-    goHostPage: function(url) {
-      this.$router.push({ path: '/2/' + url})
+    goHostPage: function(ip,port) {
+      this.$router.push({ path: '/2/' + ip + '/' + port})
     },
     deleteCluster: function(server,index) {
       //TODO:调用接口、删除用户集群

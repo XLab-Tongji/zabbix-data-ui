@@ -22,10 +22,8 @@
             </div>
             <div >
               <div v-for="item in items" style="width:100%">
-                <div v-for="child in item.children" v-if="child.rendered" style="width:50%;display:inline-block;">
-      
-                    <eChart :options="child.chartOptions" name="myCharts"></eChart>
-    
+                <div v-for="child in item.children" v-if="child.rendered" style="width:45%;display:inline-block;">
+                  <eChart :options="child.chartOptions" name="myCharts"></eChart>
                 </div>
               </div>
             </div>

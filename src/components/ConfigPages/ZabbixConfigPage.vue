@@ -31,7 +31,7 @@
         <div class="form-group">
           <div class="col-sm-4 col-sm-offset-2">
             <button class="btn btn-white" @click="cancel">Cancel</button>
-            <button class="btn btn-primary" @click="successLogin">Apply</button>
+            <button class="btn btn-primary" @click="successConnect">Apply</button>
           </div>
         </div>
       </div>
@@ -76,16 +76,15 @@
         });
       },
       //test
-      successLogin() {
+      successConnect() {
         //TODO:后端接口存储数据
-          this.success = true;
-          this.$router.push({path : '/success'})
-          toastr.success("连接成功")
+          this.$router.push({path : '/successconnect'})
+          toastr.success("添加成功")
           
       },
-      failLogin() {
+      failConnect() {
           this.success = false;
-          toastr.error("连接失败，请检查配置")
+          toastr.error("添加失败，请检查配置")
       }
     }
   }
