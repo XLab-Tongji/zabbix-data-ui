@@ -34,39 +34,40 @@ const mutations = {
             element.selected = !element.selected
         });
     },
-    [types.RESET_TEMPLATE](state, { templates }) {
-        state.zabbixTemplates = templates
+    [types.RESET_TEMPLATE](state) {
+        state.zabbixTemplates.forEach(element => {
+            element.selected = false
+        })
     }
 }
 
-const actions = {
-    getZabbixTemplate({commit}) {
-        //TODO:调用接口获取templates
+// const actions = {
+//     getZabbixTemplate({commit}) {
+//         //TODO:调用接口获取templates
 
-        var templates = [
-            {
-                templateId: 1,
-                name: "Linux Template",
-                selected: false
-            },
-            {
-                templateId: 2,
-                name: "Window Template",
-                selected: false
-            },
-            {
-                templateId: 3,
-                name: "Macos Template",
-                selected: false
-            }
-        ]
-        commit(types.RESET_TEMPLATE, { templates })
-    } 
-}
+//         var templates = [
+//             {
+//                 templateId: 1,
+//                 name: "Linux Template",
+//                 selected: false
+//             },
+//             {
+//                 templateId: 2,
+//                 name: "Window Template",
+//                 selected: false
+//             },
+//             {
+//                 templateId: 3,
+//                 name: "Macos Template",
+//                 selected: false
+//             }
+//         ]
+//         commit(types.RESET_TEMPLATE, { templates })
+//     } 
+// }
 
 export default {
     state,
     mutations,
     getters,
-    actions
 }

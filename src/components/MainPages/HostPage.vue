@@ -147,15 +147,17 @@ export default {
   },
   methods: {
     goItemPage: function(hostid) {
-      this.$router.push({ path: '/3/'+hostid })
+      let that = this
+      this.$router.push({name: 'ItemDataPage', params: {userid: that.$route.params.userid, hostid: hostid}})
+      //this.$router.push( '3/'+hostid )
     },
     addHost: function() {
       let that = this
       this.$router.push({name: 'HostConfigPage', params: {ip: that.$route.params.ip, port: that.$route.params.port}})
     },
-    goItemPage: function(hostid) {
-      this.$router.push({ path: '/3/'+hostid })
-    },
+    // goItemPage: function(hostid) {
+    //   this.$router.push({ path: '/3/'+hostid })
+    // },
     deleteHost: function(host, index) {
       //TODO:调用接口删除主机信息
       host.fadeActive = true

@@ -96,7 +96,8 @@ export default {
   },
   methods: {
     goHostPage: function(ip,port) {
-      this.$router.push({ path: '/2/' + ip + '/' + port})
+      this.$router.push({name: "HostPage", params: {ip: ip, port: port}})
+      //this.$router.push({ path: '2/' + ip + port})
     },
     deleteCluster: function(server,index) {
       //TODO:调用接口、删除用户集群
@@ -107,7 +108,7 @@ export default {
        },1000)
     },
     addCluster: function() {
-      this.$router.push({path: '/zabbixconfig'})
+      this.$router.push({path: 'zabbixconfig'})
     }
   },
   mounted() {

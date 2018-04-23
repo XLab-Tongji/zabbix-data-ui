@@ -78,7 +78,7 @@
       //test
       successConnect() {
         //TODO:后端接口存储数据
-          this.$router.push({path : '/successconnect'})
+          this.$router.push({path : 'successconnect'})
           toastr.success("添加成功")
           
       },

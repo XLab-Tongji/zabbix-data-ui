@@ -24,11 +24,15 @@ export default {
   },
   methods: {
     continueAdd: function() {
-      this.$router.push({path: '/hostconfig'})
+      let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name: 'HostConfigPage', params: {ip:ip, port:port}})
     },
     cancelAdd: function() {
-        let that = this
-      this.$router.push({path: '/2/' + that.$route.params.ip + '/' + that.$route.params.port})
+      let that = this
+      let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name: 'HostPage', params: {ip:ip, port:port}})
     }
   },
   mounted() {

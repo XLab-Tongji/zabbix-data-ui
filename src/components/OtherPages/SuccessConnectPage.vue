@@ -24,10 +24,10 @@ export default {
   },
   methods: {
     continueAdd: function() {
-      this.$router.push({path: '/zabbixconfig'})
+      this.$router.push({name: 'ZabbixConfigPage'})
     },
     cancelAdd: function() {
-      this.$router.push({path: '/'})
+      this.$router.push({name: 'ClusterPage'})
     }
   },
   mounted() {

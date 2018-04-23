@@ -42,8 +42,10 @@ const mutations = {
             element.selected = !element.selected
         });
     },
-    [types.RESET_GROUP](state, { groups }) {
-        state.zabbixGroups = groups
+    [types.RESET_GROUP](state) {
+        state.zabbixGroups.forEach(element => {
+            element.selected = false
+        })
     }
 }
 

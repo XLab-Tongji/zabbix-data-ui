@@ -63,15 +63,22 @@ export default {
     },
     successCreateHost: function() {
       //TODO:后端接口存储数据
-      let that = this
-      this.$router.push({name : 'SuccessAddHost',params : {ip: that.$route.params.ip, port: that.$route.params.port}})
+      let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name : 'SuccessAddHost',params : {ip: ip, port: port}})
+      this.$store.commit('RESET_TEMPLATE')
+      this.$store.commit('RESET_GROUP')
       toastr.success("添加成功")
     },
     selectGroup: function() {
-      this.$router.push({path: '/groupselect'})
+       let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name: 'GroupSelectPage',params : {ip: ip, port: port}})
     },
     selectTemplate: function() {
-      this.$router.push({path: '/templateselect'})
+       let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name: 'TemplateSelectPage',params : {ip: ip, port: port}})
     }
   },
   created() {

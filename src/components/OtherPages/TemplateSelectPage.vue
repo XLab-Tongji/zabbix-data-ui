@@ -66,7 +66,9 @@ export default {
           return selections
       },
       goHostConfig: function() {
-          this.$router.push({path: '/hostconfig'})
+        let ip = this.$route.params.ip
+        let port = this.$route.params.port
+        this.$router.push({name: 'HostConfigPage',params : {ip: ip, port: port}})
       }
   },
   computed: {

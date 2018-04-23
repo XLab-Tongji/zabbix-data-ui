@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import LoginPage from '@/components/MainPages/LoginPage'
+import RegisterPage from '@/components/MainPages/RegisterPage'
+import UserMainPage from '@/components/MainPages/UserMainPage'
 import HostPage from '@/components/MainPages/HostPage'
 import ItemPage from '@/components/MainPages/ItemPage'
 import ItemDataPage from '@/components/MainPages/ItemDataPage'
@@ -16,49 +19,68 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'ClusterPage',
-      component: ClusterPage
+      path: '/login',
+      name: 'LoginPage',
+      component: LoginPage
     },
     {
-      path: '/2/:ip/:port',
-      name: 'HostPage',
-      component: HostPage
+      path: '/register',
+      name: 'Register',
+      component: RegisterPage
     },
     {
-      path: '/3/:hostid',
-      name: 'ItemDataPage',
-      component: ItemDataPage
+      path: '/user/:userid',
+      name: 'UserMainPage',
+      component: UserMainPage,
+      children: [
+        {
+          path: 'cluster',
+          name: 'ClusterPage',
+          component: ClusterPage
+        },
+        {
+          path: '2/:ip/:port',
+          name: 'HostPage',
+          component: HostPage
+        },
+        {
+          path: '3/:hostid',
+          name: 'ItemDataPage',
+          component: ItemDataPage
+        },
+        {
+          path: 'zabbixconfig',
+          name: 'ZabbixConfigPage',
+          component: ZabbixConfigPage
+        },
+        {
+          path: 'hostconfig',
+          name: 'HostConfigPage',
+          component: HostConfigPage
+        },
+        {
+          path: 'successconnect',
+          name: 'SuccessConnectPage',
+          component: SuccessConnectPage
+        },
+        {
+          path: 'successaddhost',
+          name: 'SuccessAddHost',
+          component: SuccessAddHost
+        },
+        {
+          path: 'templateselect',
+          name: 'TemplateSelectPage',
+          component: TemplateSelectPage
+        },
+        {
+          path: 'groupselect',
+          name: 'GroupSelectPage',
+          component: GroupSelectPage
+        }
+      ]
     },
-    {
-      path: '/zabbixconfig',
-      name: 'ZabbixConfigPage',
-      component: ZabbixConfigPage
-    },
-    {
-      path: '/hostconfig',
-      name: 'HostConfigPage',
-      component: HostConfigPage
-    },
-    {
-      path: '/successconnect',
-      name: 'SuccessConnectPage',
-      component: SuccessConnectPage
-    },
-    {
-      path: '/successaddhost',
-      name: 'SuccessAddHost',
-      component: SuccessAddHost
-    },
-    {
-      path: '/templateselect',
-      name: 'TemplateSelectPage',
-      component: TemplateSelectPage
-    },
-    {
-      path: '/groupselect',
-      name: 'GroupSelectPage',
-      component: GroupSelectPage
-    }
+   
+    
   ]
 })
