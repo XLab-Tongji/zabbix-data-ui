@@ -159,12 +159,21 @@ export default {
     //   this.$router.push({ path: '/3/'+hostid })
     // },
     deleteHost: function(host, index) {
-      //TODO:调用接口删除主机信息
-      host.fadeActive = true
-      let that = this
-      setTimeout(function() {
-        that.hosts.splice(index,1)
-       },1000)
+      this.$confirm('确定删除?','提示',{
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //TODO:调用接口删除主机信息
+        toastr.success("删除成功")
+        host.fadeActive = true
+        let that = this
+        setTimeout(function() {
+          that.hosts.splice(index,1)
+        },1000)
+      }).catch(() => {
+        toastr.success("取消删除")
+      })
     }
     //  handleCheckChange: function(data, checked, indeterminate) {
     //   console.log("yes");

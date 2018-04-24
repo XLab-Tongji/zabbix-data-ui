@@ -100,12 +100,23 @@ export default {
       //this.$router.push({ path: '2/' + ip + port})
     },
     deleteCluster: function(server,index) {
-      //TODO:调用接口、删除用户集群
-      server.fadeActive = true
-      let that = this
-      setTimeout(function() {
-        that.servers.splice(index,1)
-       },1000)
+      this.$confirm('确定删除?','提示',{
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        //TODO:调用接口、删除用户集群
+        toastr.success('删除成功')
+        server.fadeActive = true
+        let that = this
+        setTimeout(function() {
+          that.servers.splice(index,1)
+        },1000)
+      }).catch(() => {
+        toastr.success('已取消删除')
+      })
+      
+      
     },
     addCluster: function() {
       this.$router.push({path: 'zabbixconfig'})
