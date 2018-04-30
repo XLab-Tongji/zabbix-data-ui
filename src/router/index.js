@@ -4,6 +4,7 @@ import LoginPage from '@/components/MainPages/LoginPage'
 import RegisterPage from '@/components/MainPages/RegisterPage'
 import UserMainPage from '@/components/MainPages/UserMainPage'
 import HostPage from '@/components/MainPages/HostPage'
+import ItemComparePage from '@/components/MainPages/ItemComparePage'
 import ItemPage from '@/components/MainPages/ItemPage'
 import ItemDataPage from '@/components/MainPages/ItemDataPage'
 import ClusterPage from '@/components/MainPages/ClusterPage'
@@ -18,6 +19,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/', 
+      redirect: '/login'
+    },
     {
       path: '/login',
       name: 'LoginPage',
@@ -42,6 +47,11 @@ export default new Router({
           path: '2/:ip/:port',
           name: 'HostPage',
           component: HostPage
+        },
+        {
+          path: 'itemcompare',
+          name: 'ItemComparePage',
+          component: ItemComparePage
         },
         {
           path: '3/:hostid',

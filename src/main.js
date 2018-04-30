@@ -15,6 +15,7 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/dataZoom'
+import 'echarts/lib/component/legend'
 
 import './global'
 

@@ -43,6 +43,9 @@
         
       </div>
     <!-- </div> -->
+    <div class="showBtn">
+      <button type="button" class="btn btn-primary btn-circle btn-lg dim" @click="goComparePage"><i class="fa fa-plus"></i></button>
+    </div>
     <div class="addBtn">
       <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addHost"><i class="fa fa-plus"></i></button>
     </div>
@@ -88,7 +91,7 @@ export default {
         },
         {
           label: "Host 2",
-          hostid: 10160,
+          hostid: 10161,
           host: "Host 2",
           name: "Host 2",
           description: "The Zabbix monitoring server.",
@@ -96,7 +99,7 @@ export default {
         },
         {
           label: "Host 3",
-          hostid: 10160,
+          hostid: 10162,
           host: "Host 3",
           name: "Host 3",
           description: "The Zabbix monitoring server.",
@@ -104,7 +107,7 @@ export default {
         },
         {
           label: "Host 4",
-          hostid: 10160,
+          hostid: 10163,
           host: "Host 4",
           name: "Host 4",
           description: "The Zabbix monitoring server.",
@@ -112,7 +115,7 @@ export default {
         },
         {
           label: "Host 5",
-          hostid: 10160,
+          hostid: 10164,
           host: "Host 5",
           name: "Host 5",
           description: "The Zabbix monitoring server.",
@@ -120,7 +123,7 @@ export default {
         },
         {
           label: "Host 6",
-          hostid: 10160,
+          hostid: 10165,
           host: "Host 6",
           name: "Host 6",
           description: "The Zabbix monitoring server.",
@@ -128,7 +131,7 @@ export default {
         },
         {
           label: "Host 7",
-          hostid: 10160,
+          hostid: 10166,
           host: "Host 7",
           name: "Host 7",
           description: "The Zabbix monitoring server.",
@@ -136,7 +139,7 @@ export default {
         },
         {
           label: "Host 8",
-          hostid: 10160,
+          hostid: 10167,
           host: "Host 8",
           name: "Host 8",
           description: "The Zabbix monitoring server.",
@@ -154,6 +157,10 @@ export default {
     addHost: function() {
       let that = this
       this.$router.push({name: 'HostConfigPage', params: {ip: that.$route.params.ip, port: that.$route.params.port}})
+    },
+    goComparePage: function() {
+      let that = this
+      this.$router.push({name: 'ItemComparePage', params: {ip: that.$route.params.ip, port: that.$route.params.port}})
     },
     // goItemPage: function(hostid) {
     //   this.$router.push({ path: '/3/'+hostid })
@@ -227,6 +234,11 @@ export default {
   .addBtn {
     position: fixed;
     bottom: 25px;
+    right: 30px;
+  }
+  .showBtn {
+    position: fixed;
+    bottom: 90px;
     right: 30px;
   }
 </style>
