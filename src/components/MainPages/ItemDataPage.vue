@@ -2,13 +2,14 @@
   <div id="itemDataPage">
     <div class="tabs-container" style="width:100%" >
       <ul class="nav nav-tabs">
-        <li class="active" style="width: 50%" @click="myRefresh"><a data-toggle="tab" href="#filter" aria-expanded="false"> <i class="fa fa-filter"> &nbsp;选择你需要展示的监控项</i></a></li>
-        <li class="" style="width: 50%" @click="myRefresh"><a data-toggle="tab" href="#charts" aria-expanded="true"><i class="fa fa-line-chart"> &nbsp;监控项图表全览</i></a></li>
+        <li class="active" style="width: 33%" @click="myRefresh"><a data-toggle="tab" href="#filter" aria-expanded="false"> <i class="fa fa-filter"> &nbsp;选择你需要展示的监控项</i></a></li>
+        <li class="" style="width: 33%" ><a data-toggle="tab" href="#table" aria-expanded="false"> <i class="fa fa-filter"> &nbsp;监控项数据表格</i></a></li>
+        <li class="" style="width: 33%" @click="myRefresh"><a data-toggle="tab" href="#charts" aria-expanded="true"><i class="fa fa-line-chart"> &nbsp;监控项图表全览</i></a></li>
       </ul>
       <div class="tab-content" >
         <div id="filter" class="tab-pane active">
           <div class="panel-body" style="display:flex;">
-            <div>
+            <div style="padding-bottom:20px;">
               <el-tree class="el_tree_style"
                 :data="items"
                 show-checkbox
@@ -22,9 +23,20 @@
               </el-tree>
             </div>
             <div >
-              <div v-for="item in items" style="width:100%">
-                <div v-for="child in item.children" v-if="child.rendered" style="width:45%;display:inline-block;">
-                  <eChart :options="child.chartOptions" name="myCharts"></eChart>
+              <div v-for="item in items" style="display:flex;flex-wrap: wrap">
+                <div v-for="child in item.children" v-if="child.rendered" >
+                  <eChart :options="child.chartOptions" name="myCharts" style="width: 500px"></eChart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="table" class="tab-pane">
+          <div class="panel-body">
+            <div v-for="item in items">
+              <div v-for="child in item.children">
+                <div v-if="child.rendered" >
+                  <item-table :table-title="child.label" :table-rows="child.data"></item-table>
                 </div>
               </div>
             </div>
@@ -34,8 +46,18 @@
           <div class="panel-body" style="width:100%  ;">
             <div v-for="item in items" style="width:100%  ;">
               <div v-for="child in item.children" v-if="child.rendered" style="width:100% ">
+                
                 <div v-if="child.rendered" style="width:100%;padding:20px;" >
-                  <div class="ibox-tools configure">
+                  
+                  <div class="ibox-tools configure" style="top: 0px">
+                    <el-time-picker 
+                      is-range
+                      v-model="time"
+                      range-separator="&"
+                      start-placeholder="开始时间"
+                      end-placeholder="结束时间"
+                      placeholder="选择时间范围">
+                    </el-time-picker>
                     <el-select 
                       v-model="child.selectHosts" 
                       placeholder="请选择需对比主机" 
@@ -54,9 +76,12 @@
                     <a class="close-link">
                       <i class="fa fa-times"></i>
                     </a>
-                  </div>
+                   
+                  </div> 
+                  
                   <eChart :options="child.chartDetailOptions" style="width:100%  ;" name="myCharts"></eChart>
                 </div>
+                <hr> 
               </div>
             </div>
           </div>
@@ -67,6 +92,7 @@
 </template>
 
 <script>
+import itemTable from '../component/ItemTable.vue'
 export default {
   name: "itemDataPage",
   data() {
@@ -158,45 +184,48 @@ export default {
 
       //items need to be rendered
       itemIds: [],
+
       selectHosts: [],
       selectHostsItem: '',
       select_host_item_data: [],
       hosts: [
-        { 
-          label: "Host 1",
-          hostid: 10160,
-        },
-        {
-          label: "Host 2",
-          hostid: 10161,
-        },
-        {
-          label: "Host 3",
-          hostid: 10162,
-        },
-        {
-          label: "Host 4",
-          hostid: 10163,
-        },
-        {
-          label: "Host 5",
-          hostid: 10164,
-        },
-        {
-          label: "Host 6",
-          hostid: 10165,
-        },
-        {
-          label: "Host 7",
-          hostid: 10166,
-        },
-        {
-          label: "Host 8",
-          hostid: 10167,
-        },
+        // { 
+        //   label: "Host 1",
+        //   hostid: 10160,
+        // },
+        // {
+        //   label: "Host 2",
+        //   hostid: 10161,
+        // },
+        // {
+        //   label: "Host 3",
+        //   hostid: 10162,
+        // },
+        // {
+        //   label: "Host 4",
+        //   hostid: 10163,
+        // },
+        // {
+        //   label: "Host 5",
+        //   hostid: 10164,
+        // },
+        // {
+        //   label: "Host 6",
+        //   hostid: 10165,
+        // },
+        // {
+        //   label: "Host 7",
+        //   hostid: 10166,
+        // },
+        // {
+        //   label: "Host 8",
+        //   hostid: 10167,
+        // },
       ],
       hostsForOption: [],
       offset: 0,
+      yIndex: 0,
+
       //items: []
       items: [
         {
@@ -206,88 +235,8 @@ export default {
           isLeaf: false,
           children: [
             {
-              label: "cpu load of 1",
-              data: [
-                { timeStamp: "1521035350", value: "1054859264" },
-                { timeStamp: "1521035410", value: "1054396416" },
-                { timeStamp: "1521035470", value: "1052774400" },
-                { timeStamp: "1521035530", value: "1051287552" },
-                { timeStamp: "1521035590", value: "1051049984" },
-                { timeStamp: "1521035650", value: "1050828800" },
-                { timeStamp: "1521035710", value: "1050701824" },
-                { timeStamp: "1521035770", value: "1050853376" },
-                { timeStamp: "1521035830", value: "1050984448" },
-                { timeStamp: "1521035890", value: "1052344320" },
-                { timeStamp: "1521035950", value: "1052409856" },
-                { timeStamp: "1521036010", value: "1051508736" },
-                { timeStamp: "1521036070", value: "1052073984" },
-                { timeStamp: "1521036130", value: "1051918336" },
-                { timeStamp: "1521036190", value: "1052385280" },
-                { timeStamp: "1521036250", value: "1052311552" },
-                { timeStamp: "1521036310", value: "1051865088" },
-                { timeStamp: "1521036370", value: "1051783168" },
-                { timeStamp: "1521036430", value: "1052086272" },
-                { timeStamp: "1521036490", value: "1051967488" },
-                { timeStamp: "1521036550", value: "1052356608" },
-                { timeStamp: "1521036610", value: "1053011968" },
-                { timeStamp: "1521036670", value: "1052635136" },
-                { timeStamp: "1521036730", value: "1052401664" },
-                { timeStamp: "1521036790", value: "1052352512" },
-                { timeStamp: "1521036850", value: "1052794880" },
-                { timeStamp: "1521036969", value: "1052479488" },
-                { timeStamp: "1521036970", value: "1052004352" },
-                { timeStamp: "1521037030", value: "1052110848" },
-                { timeStamp: "1521037090", value: "1052020736" },
-                { timeStamp: "1521037150", value: "1051664384" },
-                { timeStamp: "1521037210", value: "1052082176" },
-                { timeStamp: "1521037270", value: "1051553792" },
-                { timeStamp: "1521037330", value: "1051275264" },
-                { timeStamp: "1521037390", value: "1051238400" },
-                { timeStamp: "1521037450", value: "1051475968" },
-                { timeStamp: "1521037510", value: "1051070464" },
-                { timeStamp: "1521037570", value: "1051054080" },
-                { timeStamp: "1521037630", value: "1051406336" },
-                { timeStamp: "1521037690", value: "1050865664" },
-                { timeStamp: "1521037750", value: "1051213824" },
-                { timeStamp: "1521037810", value: "1051189248" },
-                { timeStamp: "1521037870", value: "1051295744" },
-                { timeStamp: "1521037930", value: "1051107328" },
-                { timeStamp: "1521037990", value: "1051217920" },
-                { timeStamp: "1521038050", value: "1051136000" },
-                { timeStamp: "1521038110", value: "1051676672" },
-                { timeStamp: "1521038170", value: "1051357184" },
-                { timeStamp: "1521038230", value: "1051066368" },
-                { timeStamp: "1521038290", value: "1051258880" },
-                { timeStamp: "1521038350", value: "1051332608" },
-                { timeStamp: "1521038410", value: "1051439104" },
-                { timeStamp: "1521038470", value: "1050816512" },
-                { timeStamp: "1521038530", value: "1051115520" },
-                { timeStamp: "1521038590", value: "1051176960" },
-                { timeStamp: "1521038650", value: "1051226112" },
-                { timeStamp: "1521038710", value: "1050923008" },
-                { timeStamp: "1521038770", value: "1050902528" },
-                { timeStamp: "1521038830", value: "1050947584" },
-                { timeStamp: "1521038890", value: "1051119616" },
-                { timeStamp: "1521038950", value: "1051176960" },
-                { timeStamp: "1521039010", value: "1051066368" },
-                { timeStamp: "1521039070", value: "1050914816" },
-                { timeStamp: "1521039130", value: "1050693632" },
-                { timeStamp: "1521039190", value: "1050537984" },
-                { timeStamp: "1521039250", value: "1050599424" },
-                { timeStamp: "1521039310", value: "1050451968" },
-                { timeStamp: "1521039370", value: "1050341376" },
-                { timeStamp: "1521039430", value: "1050501120" },
-                { timeStamp: "1521039490", value: "1050443776" },
-                { timeStamp: "1521039550", value: "1050529792" },
-                { timeStamp: "1521039610", value: "1049874432" },
-                { timeStamp: "1521039670", value: "1050357760" },
-                { timeStamp: "1521039730", value: "1050472448" },
-                { timeStamp: "1521039790", value: "1050468352" },
-                { timeStamp: "1521039850", value: "1050218496" },
-                { timeStamp: "1521039910", value: "1050808320" },
-                { timeStamp: "1521039970", value: "1050738688" },
-                { timeStamp: "1521040030", value: "1050353664" }
-              ],
+              label: "system.cpu.intr",
+              data: [],
               rendered: false,
               isLeaf: true,
               chartOptions: [],
@@ -296,88 +245,8 @@ export default {
               oldSelectHosts: []
             },
             {
-              label: "cpu load of 2",
-              data: [
-                { timeStamp: "1521035350", value: "1054859264" },
-                { timeStamp: "1521035410", value: "1054396416" },
-                { timeStamp: "1521035470", value: "1052774400" },
-                { timeStamp: "1521035530", value: "1051287552" },
-                { timeStamp: "1521035590", value: "1051049984" },
-                { timeStamp: "1521035650", value: "1050828800" },
-                { timeStamp: "1521035710", value: "1050701824" },
-                { timeStamp: "1521035770", value: "1050853376" },
-                { timeStamp: "1521035830", value: "1050984448" },
-                { timeStamp: "1521035890", value: "1052344320" },
-                { timeStamp: "1521035950", value: "1052409856" },
-                { timeStamp: "1521036010", value: "1051508736" },
-                { timeStamp: "1521036070", value: "1052073984" },
-                { timeStamp: "1521036130", value: "1051918336" },
-                { timeStamp: "1521036190", value: "1052385280" },
-                { timeStamp: "1521036250", value: "1052311552" },
-                { timeStamp: "1521036310", value: "1051865088" },
-                { timeStamp: "1521036370", value: "1051783168" },
-                { timeStamp: "1521036430", value: "1052086272" },
-                { timeStamp: "1521036490", value: "1051967488" },
-                { timeStamp: "1521036550", value: "1052356608" },
-                { timeStamp: "1521036610", value: "1053011968" },
-                { timeStamp: "1521036670", value: "1052635136" },
-                { timeStamp: "1521036730", value: "1052401664" },
-                { timeStamp: "1521036790", value: "1052352512" },
-                { timeStamp: "1521036850", value: "1052794880" },
-                { timeStamp: "1521036969", value: "1052479488" },
-                { timeStamp: "1521036970", value: "1052004352" },
-                { timeStamp: "1521037030", value: "1052110848" },
-                { timeStamp: "1521037090", value: "1052020736" },
-                { timeStamp: "1521037150", value: "1051664384" },
-                { timeStamp: "1521037210", value: "1052082176" },
-                { timeStamp: "1521037270", value: "1051553792" },
-                { timeStamp: "1521037330", value: "1051275264" },
-                { timeStamp: "1521037390", value: "1051238400" },
-                { timeStamp: "1521037450", value: "1051475968" },
-                { timeStamp: "1521037510", value: "1051070464" },
-                { timeStamp: "1521037570", value: "1051054080" },
-                { timeStamp: "1521037630", value: "1051406336" },
-                { timeStamp: "1521037690", value: "1050865664" },
-                { timeStamp: "1521037750", value: "1051213824" },
-                { timeStamp: "1521037810", value: "1051189248" },
-                { timeStamp: "1521037870", value: "1051295744" },
-                { timeStamp: "1521037930", value: "1051107328" },
-                { timeStamp: "1521037990", value: "1051217920" },
-                { timeStamp: "1521038050", value: "1051136000" },
-                { timeStamp: "1521038110", value: "1051676672" },
-                { timeStamp: "1521038170", value: "1051357184" },
-                { timeStamp: "1521038230", value: "1051066368" },
-                { timeStamp: "1521038290", value: "1051258880" },
-                { timeStamp: "1521038350", value: "1051332608" },
-                { timeStamp: "1521038410", value: "1051439104" },
-                { timeStamp: "1521038470", value: "1050816512" },
-                { timeStamp: "1521038530", value: "1051115520" },
-                { timeStamp: "1521038590", value: "1051176960" },
-                { timeStamp: "1521038650", value: "1051226112" },
-                { timeStamp: "1521038710", value: "1050923008" },
-                { timeStamp: "1521038770", value: "1050902528" },
-                { timeStamp: "1521038830", value: "1050947584" },
-                { timeStamp: "1521038890", value: "1051119616" },
-                { timeStamp: "1521038950", value: "1051176960" },
-                { timeStamp: "1521039010", value: "1051066368" },
-                { timeStamp: "1521039070", value: "1050914816" },
-                { timeStamp: "1521039130", value: "1050693632" },
-                { timeStamp: "1521039190", value: "1050537984" },
-                { timeStamp: "1521039250", value: "1050599424" },
-                { timeStamp: "1521039310", value: "1050451968" },
-                { timeStamp: "1521039370", value: "1050341376" },
-                { timeStamp: "1521039430", value: "1050501120" },
-                { timeStamp: "1521039490", value: "1050443776" },
-                { timeStamp: "1521039550", value: "1050529792" },
-                { timeStamp: "1521039610", value: "1049874432" },
-                { timeStamp: "1521039670", value: "1050357760" },
-                { timeStamp: "1521039730", value: "1050472448" },
-                { timeStamp: "1521039790", value: "1050468352" },
-                { timeStamp: "1521039850", value: "1050218496" },
-                { timeStamp: "1521039910", value: "1050808320" },
-                { timeStamp: "1521039970", value: "1050738688" },
-                { timeStamp: "1521040030", value: "1050353664" }
-              ],
+              label: "system.cpu.load[percpu,avg1]",
+              data: [],
               rendered: false,
               isLeaf: true,
               chartOptions: [],
@@ -386,88 +255,8 @@ export default {
               oldSelectHosts: []
             },
             {
-              label: "cpu load of 3",
-              data: [
-                { timeStamp: "1521035350", value: "1054859264" },
-                { timeStamp: "1521035410", value: "1054396416" },
-                { timeStamp: "1521035470", value: "1052774400" },
-                { timeStamp: "1521035530", value: "1051287552" },
-                { timeStamp: "1521035590", value: "1051049984" },
-                { timeStamp: "1521035650", value: "1050828800" },
-                { timeStamp: "1521035710", value: "1050701824" },
-                { timeStamp: "1521035770", value: "1050853376" },
-                { timeStamp: "1521035830", value: "1050984448" },
-                { timeStamp: "1521035890", value: "1052344320" },
-                { timeStamp: "1521035950", value: "1052409856" },
-                { timeStamp: "1521036010", value: "1051508736" },
-                { timeStamp: "1521036070", value: "1052073984" },
-                { timeStamp: "1521036130", value: "1051918336" },
-                { timeStamp: "1521036190", value: "1052385280" },
-                { timeStamp: "1521036250", value: "1052311552" },
-                { timeStamp: "1521036310", value: "1051865088" },
-                { timeStamp: "1521036370", value: "1051783168" },
-                { timeStamp: "1521036430", value: "1052086272" },
-                { timeStamp: "1521036490", value: "1051967488" },
-                { timeStamp: "1521036550", value: "1052356608" },
-                { timeStamp: "1521036610", value: "1053011968" },
-                { timeStamp: "1521036670", value: "1052635136" },
-                { timeStamp: "1521036730", value: "1052401664" },
-                { timeStamp: "1521036790", value: "1052352512" },
-                { timeStamp: "1521036850", value: "1052794880" },
-                { timeStamp: "1521036969", value: "1052479488" },
-                { timeStamp: "1521036970", value: "1052004352" },
-                { timeStamp: "1521037030", value: "1052110848" },
-                { timeStamp: "1521037090", value: "1052020736" },
-                { timeStamp: "1521037150", value: "1051664384" },
-                { timeStamp: "1521037210", value: "1052082176" },
-                { timeStamp: "1521037270", value: "1051553792" },
-                { timeStamp: "1521037330", value: "1051275264" },
-                { timeStamp: "1521037390", value: "1051238400" },
-                { timeStamp: "1521037450", value: "1051475968" },
-                { timeStamp: "1521037510", value: "1051070464" },
-                { timeStamp: "1521037570", value: "1051054080" },
-                { timeStamp: "1521037630", value: "1051406336" },
-                { timeStamp: "1521037690", value: "1050865664" },
-                { timeStamp: "1521037750", value: "1051213824" },
-                { timeStamp: "1521037810", value: "1051189248" },
-                { timeStamp: "1521037870", value: "1051295744" },
-                { timeStamp: "1521037930", value: "1051107328" },
-                { timeStamp: "1521037990", value: "1051217920" },
-                { timeStamp: "1521038050", value: "1051136000" },
-                { timeStamp: "1521038110", value: "1051676672" },
-                { timeStamp: "1521038170", value: "1051357184" },
-                { timeStamp: "1521038230", value: "1051066368" },
-                { timeStamp: "1521038290", value: "1051258880" },
-                { timeStamp: "1521038350", value: "1051332608" },
-                { timeStamp: "1521038410", value: "1051439104" },
-                { timeStamp: "1521038470", value: "1050816512" },
-                { timeStamp: "1521038530", value: "1051115520" },
-                { timeStamp: "1521038590", value: "1051176960" },
-                { timeStamp: "1521038650", value: "1051226112" },
-                { timeStamp: "1521038710", value: "1050923008" },
-                { timeStamp: "1521038770", value: "1050902528" },
-                { timeStamp: "1521038830", value: "1050947584" },
-                { timeStamp: "1521038890", value: "1051119616" },
-                { timeStamp: "1521038950", value: "1051176960" },
-                { timeStamp: "1521039010", value: "1051066368" },
-                { timeStamp: "1521039070", value: "1050914816" },
-                { timeStamp: "1521039130", value: "1050693632" },
-                { timeStamp: "1521039190", value: "1050537984" },
-                { timeStamp: "1521039250", value: "1050599424" },
-                { timeStamp: "1521039310", value: "1050451968" },
-                { timeStamp: "1521039370", value: "1050341376" },
-                { timeStamp: "1521039430", value: "1050501120" },
-                { timeStamp: "1521039490", value: "1050443776" },
-                { timeStamp: "1521039550", value: "1050529792" },
-                { timeStamp: "1521039610", value: "1049874432" },
-                { timeStamp: "1521039670", value: "1050357760" },
-                { timeStamp: "1521039730", value: "1050472448" },
-                { timeStamp: "1521039790", value: "1050468352" },
-                { timeStamp: "1521039850", value: "1050218496" },
-                { timeStamp: "1521039910", value: "1050808320" },
-                { timeStamp: "1521039970", value: "1050738688" },
-                { timeStamp: "1521040030", value: "1050353664" }
-              ],
+              label: "system.cpu.load[percpu,avg15]",
+              data: [],
               rendered: false,
               isLeaf: true,
               chartOptions: [],
@@ -476,95 +265,106 @@ export default {
               oldSelectHosts: []
             },
             {
-              label: "cpu load of 4",
-              data: [
-                { timeStamp: "1521035350", value: "1054859264" },
-                { timeStamp: "1521035410", value: "1054396416" },
-                { timeStamp: "1521035470", value: "1052774400" },
-                { timeStamp: "1521035530", value: "1051287552" },
-                { timeStamp: "1521035590", value: "1051049984" },
-                { timeStamp: "1521035650", value: "1050828800" },
-                { timeStamp: "1521035710", value: "1050701824" },
-                { timeStamp: "1521035770", value: "1050853376" },
-                { timeStamp: "1521035830", value: "1050984448" },
-                { timeStamp: "1521035890", value: "1052344320" },
-                { timeStamp: "1521035950", value: "1052409856" },
-                { timeStamp: "1521036010", value: "1051508736" },
-                { timeStamp: "1521036070", value: "1052073984" },
-                { timeStamp: "1521036130", value: "1051918336" },
-                { timeStamp: "1521036190", value: "1052385280" },
-                { timeStamp: "1521036250", value: "1052311552" },
-                { timeStamp: "1521036310", value: "1051865088" },
-                { timeStamp: "1521036370", value: "1051783168" },
-                { timeStamp: "1521036430", value: "1052086272" },
-                { timeStamp: "1521036490", value: "1051967488" },
-                { timeStamp: "1521036550", value: "1052356608" },
-                { timeStamp: "1521036610", value: "1053011968" },
-                { timeStamp: "1521036670", value: "1052635136" },
-                { timeStamp: "1521036730", value: "1052401664" },
-                { timeStamp: "1521036790", value: "1052352512" },
-                { timeStamp: "1521036850", value: "1052794880" },
-                { timeStamp: "1521036969", value: "1052479488" },
-                { timeStamp: "1521036970", value: "1052004352" },
-                { timeStamp: "1521037030", value: "1052110848" },
-                { timeStamp: "1521037090", value: "1052020736" },
-                { timeStamp: "1521037150", value: "1051664384" },
-                { timeStamp: "1521037210", value: "1052082176" },
-                { timeStamp: "1521037270", value: "1051553792" },
-                { timeStamp: "1521037330", value: "1051275264" },
-                { timeStamp: "1521037390", value: "1051238400" },
-                { timeStamp: "1521037450", value: "1051475968" },
-                { timeStamp: "1521037510", value: "1051070464" },
-                { timeStamp: "1521037570", value: "1051054080" },
-                { timeStamp: "1521037630", value: "1051406336" },
-                { timeStamp: "1521037690", value: "1050865664" },
-                { timeStamp: "1521037750", value: "1051213824" },
-                { timeStamp: "1521037810", value: "1051189248" },
-                { timeStamp: "1521037870", value: "1051295744" },
-                { timeStamp: "1521037930", value: "1051107328" },
-                { timeStamp: "1521037990", value: "1051217920" },
-                { timeStamp: "1521038050", value: "1051136000" },
-                { timeStamp: "1521038110", value: "1051676672" },
-                { timeStamp: "1521038170", value: "1051357184" },
-                { timeStamp: "1521038230", value: "1051066368" },
-                { timeStamp: "1521038290", value: "1051258880" },
-                { timeStamp: "1521038350", value: "1051332608" },
-                { timeStamp: "1521038410", value: "1051439104" },
-                { timeStamp: "1521038470", value: "1050816512" },
-                { timeStamp: "1521038530", value: "1051115520" },
-                { timeStamp: "1521038590", value: "1051176960" },
-                { timeStamp: "1521038650", value: "1051226112" },
-                { timeStamp: "1521038710", value: "1050923008" },
-                { timeStamp: "1521038770", value: "1050902528" },
-                { timeStamp: "1521038830", value: "1050947584" },
-                { timeStamp: "1521038890", value: "1051119616" },
-                { timeStamp: "1521038950", value: "1051176960" },
-                { timeStamp: "1521039010", value: "1051066368" },
-                { timeStamp: "1521039070", value: "1050914816" },
-                { timeStamp: "1521039130", value: "1050693632" },
-                { timeStamp: "1521039190", value: "1050537984" },
-                { timeStamp: "1521039250", value: "1050599424" },
-                { timeStamp: "1521039310", value: "1050451968" },
-                { timeStamp: "1521039370", value: "1050341376" },
-                { timeStamp: "1521039430", value: "1050501120" },
-                { timeStamp: "1521039490", value: "1050443776" },
-                { timeStamp: "1521039550", value: "1050529792" },
-                { timeStamp: "1521039610", value: "1049874432" },
-                { timeStamp: "1521039670", value: "1050357760" },
-                { timeStamp: "1521039730", value: "1050472448" },
-                { timeStamp: "1521039790", value: "1050468352" },
-                { timeStamp: "1521039850", value: "1050218496" },
-                { timeStamp: "1521039910", value: "1050808320" },
-                { timeStamp: "1521039970", value: "1050738688" },
-                { timeStamp: "1521040030", value: "1050353664" }
-              ],
+              label: "system.cpu.load[percpu,avg5]",
+              data: [],
               rendered: false,
               isLeaf: true,
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: []
-            }
+            },
+            {
+              label: "system.cpu.switches",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,idle]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,interrupt]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,iowait]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,nice]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,softirq]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,steal]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,system]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.cpu.util[,user]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            
           ]
         },
         {
@@ -574,7 +374,17 @@ export default {
           isLeaf: false,
           children: [
             {
-              label: "memory used",
+              label: "vm.memory.size[available]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vm.memory.size[total]",
               data: [],
               rendered: false,
               isLeaf: true,
@@ -592,7 +402,47 @@ export default {
           isLeaf: false,
           children: [
             {
-              label: "inode used",
+              label: "vfs.fs.inode[/,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.inode[/boot,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.inode[/var/lib/docker/aufs,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.inode[/var/lib/kubelet,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.inode[/var/lib/rancher/volumes,pfree]",
               data: [],
               rendered: false,
               isLeaf: true,
@@ -610,7 +460,237 @@ export default {
           isLeaf: false,
           children: [
             {
-              label: "disk used",
+              label: "system.swap.size[,free]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.swap.size[,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "system.swap.size[,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/,used]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/boot,free]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/boot,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/boot,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/boot,used]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/docker/aufs,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/docker/aufs,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/docker/aufs,used]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/kubelet,free]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/kubelet,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/kubelet,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/kubelet,used]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/rancher/volumes,free]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/rancher/volumes,pfree]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/rancher/volumes,total]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: "vfs.fs.size[/var/lib/rancher/volumes,used]",
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            
+            
+          ]
+        },
+        {
+          label: "NETWORK",
+          spread: false,
+          firstSpread: false,
+          isLeaf: false,
+          children: [
+            {
+              label: 'net.if.in[ens160]',
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: 'net.if.out[ens160]',
               data: [],
               rendered: false,
               isLeaf: true,
@@ -619,14 +699,7 @@ export default {
               selectHosts: [],
               oldSelectHosts: []
             }
-          ]
-        },
-        {
-          label: "NETWORK",
-          spread: false,
-          firstSpread: false,
-          isLeaf: false,
-          children: [],
+          ],
           rendered: false
         },
         {
@@ -634,13 +707,35 @@ export default {
           spread: false,
           firstSpread: false,
           isLeaf: false,
-          children: [],
+          children: [
+            {
+              label: 'proc.num[,,run]',
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            },
+            {
+              label: 'proc.num[]',
+              data: [],
+              rendered: false,
+              isLeaf: true,
+              chartOptions: [],
+              chartDetailOptions: [],
+              selectHosts: [],
+              oldSelectHosts: []
+            }
+          ],
           rendered: false
         }
       ],
 
       itemId: "28330",
       valueType: "3",
+      time:[],
       timeFrom: "",
       timeTill: "",
 
@@ -650,24 +745,40 @@ export default {
       }
     };
   },
+  components: {
+    itemTable
+  },
   methods: {
     handleCheckChange: function(data, checked, indeterminate) {
-      
       if (data.isLeaf) {
-        //TODO:调用接口
-        if (!data.rendered) {
+        this.$http.get('/api/itemdata').then(res => {
+          data.data = res.body
+          if (!data.rendered) {
+            
           let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
-          console.log(host)
           let option = this.getOption(data.data, data.label, false);
           let detailOption = this.getOption(data.data, data.label, true, host[0].label);
           data.chartOptions = option;
           data.chartDetailOptions = detailOption;
         }
         data.rendered = !data.rendered;
+        })
+        // if (!data.rendered) {
+        //   let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
+        //   console.log(data.data)
+        //   let option = this.getOption(data.data, data.label, false);
+        //   let detailOption = this.getOption(data.data, data.label, true, host[0].label);
+        //   data.chartOptions = option;
+        //   data.chartDetailOptions = detailOption;
+        // }
+        // data.rendered = !data.rendered;
       } else {
         if (!data.spread && !data.firstSpread) {
           let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
           data.children.forEach(function(element) {
+            that.$http.get('/api/itemdata').then(res => {
+              element.data = res.body
+          
             if (!element.rendered) {
               element.chartOptions = that.getOption(
                 element.data,
@@ -682,6 +793,7 @@ export default {
               );
             }
             element.rendered = !element.rendered;
+            })
           });
         }
       }
@@ -798,12 +910,13 @@ export default {
           trigger: "axis"
         },
         legend: {
+          borderColor: '#1ab394',
          // data: ['test','test1']
          top: '25px'
         },
         grid: {
-          left: "15%",
-          right: "15%"
+          left: showSth ? '15%' : 20,
+          right: showSth ? '15%' : 20,
         },
         xAxis: [
           {
@@ -821,8 +934,7 @@ export default {
           {
             name: hostName,
             type: "value",
-            min: "dataMin",
-            max: "dataMax",
+            scale: true,
             axisTick: {
               show: showSth
             },
@@ -862,7 +974,7 @@ export default {
               color: "#1ab394"
             },
             itemStyle: {
-              color: "#999"
+              color: "#1ab394"
             },
             data: newData
           }
@@ -879,7 +991,7 @@ export default {
         
         data.forEach(element => {
           var Evalue = element.value * 1 + (Math.random() * 2 - 1) * 1000000
-          newData.push([element.timeStamp * 1000, Evalue])
+          newData.push([element.timeStamp * 1000 , Evalue])
           value.push(Evalue)
         })
 
@@ -896,13 +1008,13 @@ export default {
               max: "dataMax",
               //offset: this.offset += 20
             })
-            let yIndex = childOptionY.length - 1
+            //this.yIndex ++
             childOptionSeries.push({
               name: hostname,
               type: 'line',
               sampling: 'average',
               data: newData,
-              yAxisIndex: 1
+              //yAxisIndex: this.yIndex
             })
         } else {
           childOptionSeries.push({
@@ -915,9 +1027,10 @@ export default {
         
       } else {
         
-        if(this.myOptionFilter(childOptionSeries, hostname)) {
-          this.myOptionFilter(childOptionY, hostname)
-        }
+        this.myOptionFilter(childOptionSeries, hostname)
+        // if(this.myOptionFilter(childOptionY, hostname)) {
+        //   this.yIndex --
+        // }
         // child.chartDetailOptions.series = childOptionSeries.filter(t => t.name !== hostname)
         // child.chartDetailOptions.yAxis = childOptionY.filter(t => t.name !== hostname)
         
@@ -928,9 +1041,10 @@ export default {
       arr.forEach((element, index) => {
         if(element.name === name) {
           arr.splice(index, 1)
+          return true
         }
       })
-      return true
+      return false
     }
   },
   mounted() {
@@ -942,8 +1056,18 @@ export default {
       });
     };
 
+    // this.$http.get('/api/hosts').then(res => {
+    //   res.body.forEach(element => {
+    //     let host = {
+    //       label: element.host,
+    //       hostid: element.hostid
+    //     }
+    //     this.hosts.push(host)
+    //   })
+    // })
+    this.hosts = this.$route.params.hosts
+
     this.paramsHostid = this.$route.params.hostid
-    console.log(this.paramsHostid)
     let hostid = this.paramsHostid
     this.hostsForOption = this.hosts.filter(t => t.hostid !== hostid)
   }
@@ -954,7 +1078,7 @@ export default {
 <style scoped>
 .el_tree_style {
   padding-right: 10px;
-  background-color: #f3f3f4;
+  background-color: #fff;
   display: inline-block;
   margin-right: 10px;
   height: 100%;

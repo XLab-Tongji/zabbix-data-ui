@@ -23,9 +23,9 @@
           <li :class="{ active:isZabbixPage }">
             <a @click="showZabbixPage"><i class="fa fa-th-large"></i> <span class="nav-label">My zabbix</span></a>
           </li>
-          <li :class="{ active:isIdentityPage }">
+          <!-- <li :class="{ active:isIdentityPage }">
             <a @click="showIdentityPage"><i class="fa fa-th-large"></i> <span class="nav-label">Identity</span> </a>
-          </li>
+          </li> -->
           <!-- <li>
             <a @click="showItemDataPage"><i class="fa fa-th-large"></i> <span class="nav-label">Minor view</span> </a>
           </li> -->
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     showZabbixPage: function () {
-      this.$router.push("/cluster")
+      this.$router.push("/user/1/cluster")
       this.isZabbixPage = true
       this.isIdentityPage = false
     },
@@ -93,9 +93,6 @@ export default {
       this.isZabbixPage = false
       this.isIdentityPage = true
     },
-    showItemDataPage: function () {
-      this.$router.push("/3")
-    }
   },
   mounted() {
    

@@ -43,9 +43,6 @@
         
       </div>
     <!-- </div> -->
-    <div class="showBtn">
-      <button type="button" class="btn btn-primary btn-circle btn-lg dim" @click="goComparePage"><i class="fa fa-plus"></i></button>
-    </div>
     <div class="addBtn">
       <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addHost"><i class="fa fa-plus"></i></button>
     </div>
@@ -80,78 +77,79 @@ export default {
         children: "children",
         label: "label"
       },
-      hosts: [
-        { 
-          label: "Host 1",
-          hostid: 10160,
-          host: "Host 1",
-          name: "Host 1",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 2",
-          hostid: 10161,
-          host: "Host 2",
-          name: "Host 2",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 3",
-          hostid: 10162,
-          host: "Host 3",
-          name: "Host 3",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 4",
-          hostid: 10163,
-          host: "Host 4",
-          name: "Host 4",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 5",
-          hostid: 10164,
-          host: "Host 5",
-          name: "Host 5",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 6",
-          hostid: 10165,
-          host: "Host 6",
-          name: "Host 6",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 7",
-          hostid: 10166,
-          host: "Host 7",
-          name: "Host 7",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-        {
-          label: "Host 8",
-          hostid: 10167,
-          host: "Host 8",
-          name: "Host 8",
-          description: "The Zabbix monitoring server.",
-          fadeActive: false
-        },
-      ],
+      // hosts: [
+      //   { 
+      //     label: "Host 1",
+      //     hostid: 10160,
+      //     host: "Host 1",
+      //     name: "Host 1",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 2",
+      //     hostid: 10161,
+      //     host: "Host 2",
+      //     name: "Host 2",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 3",
+      //     hostid: 10162,
+      //     host: "Host 3",
+      //     name: "Host 3",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 4",
+      //     hostid: 10163,
+      //     host: "Host 4",
+      //     name: "Host 4",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 5",
+      //     hostid: 10164,
+      //     host: "Host 5",
+      //     name: "Host 5",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 6",
+      //     hostid: 10165,
+      //     host: "Host 6",
+      //     name: "Host 6",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 7",
+      //     hostid: 10166,
+      //     host: "Host 7",
+      //     name: "Host 7",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      //   {
+      //     label: "Host 8",
+      //     hostid: 10167,
+      //     host: "Host 8",
+      //     name: "Host 8",
+      //     description: "The Zabbix monitoring server.",
+      //     fadeActive: false
+      //   },
+      // ],
+      hosts: []
     };
   },
   methods: {
     goItemPage: function(hostid) {
       let that = this
-      this.$router.push({name: 'ItemDataPage', params: {userid: that.$route.params.userid, hostid: hostid}})
+      this.$router.push({name: 'ItemDataPage', params: {userid: that.$route.params.userid, hostid: hostid, hosts: this.hosts}})
       //this.$router.push( '3/'+hostid )
     },
     addHost: function() {
@@ -207,17 +205,23 @@ export default {
     // },
   },
   mounted() {
-    // get zabbix hosts
-    console.log(this.$route.params)
-    this.$http.get(zabbixUrl + "/hosts").then(
-      function(response) {
-        console.log(response);
-        this.hosts = response.body;
-      },
-      function(error) {
-        console.log(error);
-      }
-    );
+    // this.$http.get(zabbixUrl + "/hosts").then(
+    //   function(response) {
+    //     console.log(response);
+    //     this.hosts = response.body;
+    //   },
+    //   function(error) {
+    //     console.log(error);
+    //   }
+    // );
+    this.$http.get('/api/hosts').then(res => {
+      console.log(res)
+      res.body.forEach(element => {
+        element.label = element.name = element.host
+        element.fadeActive = false
+      });
+      this.hosts = res.body
+    })
   }
 };
 </script>

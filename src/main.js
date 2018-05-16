@@ -27,6 +27,7 @@ Vue.use(ElementUI);
 
 Vue.component('eChart',ECharts)
 
+require('./mock.js')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
