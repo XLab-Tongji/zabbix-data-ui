@@ -37,6 +37,7 @@
               <div v-for="child in item.children">
                 <div v-if="child.rendered" >
                   <item-table :table-title="child.label" :table-rows="child.data"></item-table>
+                  <hr>
                 </div>
               </div>
             </div>
@@ -50,14 +51,16 @@
                 <div v-if="child.rendered" style="width:100%;padding:20px;" >
                   
                   <div class="ibox-tools configure" style="top: 0px">
-                    <el-time-picker 
-                      is-range
-                      v-model="time"
-                      range-separator="&"
-                      start-placeholder="开始时间"
-                      end-placeholder="结束时间"
-                      placeholder="选择时间范围">
-                    </el-time-picker>
+                    <el-date-picker
+                      v-model="child.time"
+                      type="datetimerange"
+                      :picker-options="pickerOptions"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      align="right"
+                      @change="handleTimePickerChange(child)">
+                    </el-date-picker>
                     <el-select 
                       v-model="child.selectHosts" 
                       placeholder="请选择需对比主机" 
@@ -242,7 +245,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.load[percpu,avg1]",
@@ -252,7 +257,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.load[percpu,avg15]",
@@ -262,7 +269,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.load[percpu,avg5]",
@@ -272,7 +281,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.switches",
@@ -282,7 +293,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,idle]",
@@ -292,7 +305,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,interrupt]",
@@ -302,7 +317,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,iowait]",
@@ -312,7 +329,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,nice]",
@@ -322,7 +341,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,softirq]",
@@ -332,7 +353,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,steal]",
@@ -342,7 +365,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,system]",
@@ -352,7 +377,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.cpu.util[,user]",
@@ -362,7 +389,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             
           ]
@@ -381,7 +410,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vm.memory.size[total]",
@@ -391,7 +422,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             }
           ]
         },
@@ -409,7 +442,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.inode[/boot,pfree]",
@@ -419,7 +454,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.inode[/var/lib/docker/aufs,pfree]",
@@ -429,7 +466,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.inode[/var/lib/kubelet,pfree]",
@@ -439,7 +478,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.inode[/var/lib/rancher/volumes,pfree]",
@@ -449,7 +490,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             }
           ]
         },
@@ -467,7 +510,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.swap.size[,pfree]",
@@ -477,7 +522,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "system.swap.size[,total]",
@@ -487,7 +534,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/,pfree]",
@@ -497,7 +546,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/,total]",
@@ -507,7 +558,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/,used]",
@@ -517,7 +570,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/boot,free]",
@@ -527,7 +582,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/boot,pfree]",
@@ -537,7 +594,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/boot,total]",
@@ -547,7 +606,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/boot,used]",
@@ -557,7 +618,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,pfree]",
@@ -567,7 +630,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,total]",
@@ -577,7 +642,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,used]",
@@ -587,7 +654,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,free]",
@@ -597,7 +666,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,pfree]",
@@ -607,7 +678,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,total]",
@@ -617,7 +690,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,used]",
@@ -627,7 +702,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,free]",
@@ -637,7 +714,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,pfree]",
@@ -647,7 +726,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,total]",
@@ -657,7 +738,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,used]",
@@ -667,7 +750,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             
             
@@ -687,7 +772,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: 'net.if.out[ens160]',
@@ -697,7 +784,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             }
           ],
           rendered: false
@@ -716,7 +805,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             },
             {
               label: 'proc.num[]',
@@ -726,7 +817,9 @@ export default {
               chartOptions: [],
               chartDetailOptions: [],
               selectHosts: [],
-              oldSelectHosts: []
+              oldSelectHosts: [],
+
+              time: [],
             }
           ],
           rendered: false
@@ -735,9 +828,39 @@ export default {
 
       itemId: "28330",
       valueType: "3",
+
       time:[],
       timeFrom: "",
       timeTill: "",
+      pickerOptions: {
+          shortcuts: [
+            {
+            text: '最近6小时',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 6);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
 
       defaultProps: {
         children: "children",
@@ -819,16 +942,19 @@ export default {
         for(index = child.oldSelectHosts.length; index < child.selectHosts.length; index += 1) {
           var hostid = child.selectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
           //TODO: 请求数据
-          $.UpdateCompareOption(hostname, $.data, child, 'add')
+          this.$http.get('/api/itemdata').then(res => {
+            $.UpdateCompareOption(hostname, res.body, child, 'add')
+          })
+          
         }
       } else {
        
         for(index = 0; index < child.oldSelectHosts.length; index += 1) {
           
           if(child.selectHosts.indexOf(child.oldSelectHosts[index]) === -1) {
-            console.log("yes")
+
             var hostid = child.oldSelectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
-            console.log(hostname)
+
             $.UpdateCompareOption(hostname, [], child, 'delete')
           }
         }
@@ -858,6 +984,10 @@ export default {
     handleEloptionFocus: function(label) {
       this.selectHostsItem = label
       console.log(this.selectHostsItem)
+    },
+    handleTimePickerChange: function(child) {
+      //TODO:请求数据
+      console.log(child.time)
     },
     myRefresh: function(tab) {
       setTimeout(function() {
@@ -990,9 +1120,9 @@ export default {
         var valueOrigin = []
         
         data.forEach(element => {
-          var Evalue = element.value * 1 + (Math.random() * 2 - 1) * 1000000
-          newData.push([element.timeStamp * 1000 , Evalue])
-          value.push(Evalue)
+          //var Evalue = element.value * 1 + (Math.random() * 2 - 1) * 1000000
+          newData.push([element.timeStamp * 1000 , element.value])
+          //value.push(Evalue)
         })
 
         childOptionSeries[0].data.forEach(element => {

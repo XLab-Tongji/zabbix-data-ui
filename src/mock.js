@@ -20,7 +20,7 @@ const items = function() {
     var items = []
     for(let i = 0; i < 80; i++) {
         let newItemData = {
-            timeStamp: 1521035350 + 60 * i + 60,
+            timeStamp: 1521035350 + 60 * i,
             value: 1052073984 + Random.integer(-500, 500)
         }
         items.push(newItemData)
