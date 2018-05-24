@@ -8,19 +8,25 @@
       </ul>
       <div class="tab-content" >
         <div id="filter" class="tab-pane active">
-          <div class="panel-body" style="display:flex;">
-            <div style="padding-bottom:20px;">
-              <el-tree class="el_tree_style"
-                :data="items"
-                show-checkbox
-                node-key="label"
-                :props="defaultProps"
-                ref="tree"
-                @check-change="handleCheckChange"
-                @node-expand="handleNodeExpand"
-                @node-collapse="handleNodeCollapse"
-                @node-click="handleNodeClick">
-              </el-tree>
+          <div class="panel-body">
+          <div>
+              <h2>{{paramsHostid}}&nbsp-&nbsp{{hosts.filter(t => t.hostid == paramsHostid)[0].name}}</h2>
+            </div>
+          <hr>
+          <div style="display:flex;">
+            
+            <div>
+                <el-tree class="el_tree_style"
+                  :data="items"
+                  show-checkbox
+                  node-key="label"
+                  :props="defaultProps"
+                  ref="tree"
+                  @check-change="handleCheckChange"
+                  @node-expand="handleNodeExpand"
+                  @node-collapse="handleNodeCollapse"
+                  @node-click="handleNodeClick">
+                </el-tree>
             </div>
             <div >
               <div v-for="item in items" style="display:flex;flex-wrap: wrap">
@@ -29,6 +35,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
         <div id="table" class="tab-pane">
@@ -191,40 +198,7 @@ export default {
       selectHosts: [],
       selectHostsItem: '',
       select_host_item_data: [],
-      hosts: [
-        // { 
-        //   label: "Host 1",
-        //   hostid: 10160,
-        // },
-        // {
-        //   label: "Host 2",
-        //   hostid: 10161,
-        // },
-        // {
-        //   label: "Host 3",
-        //   hostid: 10162,
-        // },
-        // {
-        //   label: "Host 4",
-        //   hostid: 10163,
-        // },
-        // {
-        //   label: "Host 5",
-        //   hostid: 10164,
-        // },
-        // {
-        //   label: "Host 6",
-        //   hostid: 10165,
-        // },
-        // {
-        //   label: "Host 7",
-        //   hostid: 10166,
-        // },
-        // {
-        //   label: "Host 8",
-        //   hostid: 10167,
-        // },
-      ],
+      hosts: [],
       hostsForOption: [],
       offset: 0,
       yIndex: 0,
@@ -830,8 +804,8 @@ export default {
       valueType: "3",
 
       time:[],
-      timeFrom: "",
-      timeTill: "",
+      timeFrom: Date.parse(new Date()) / 1000 - 3 * 60 * 60,
+      timeTill: Date.parse(new Date()) / 1000,
       pickerOptions: {
           shortcuts: [
             {
@@ -843,19 +817,19 @@ export default {
               picker.$emit('pick', [start, end]);
             }
           }, {
-            text: '最近一周',
+            text: '最近12小时',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              start.setTime(start.getTime() - 3600 * 1000 * 12);
               picker.$emit('pick', [start, end]);
             }
           }, {
-            text: '最近一个月',
+            text: '最近一天',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              start.setTime(start.getTime() - 3600 * 1000 * 24 );
               picker.$emit('pick', [start, end]);
             }
           }
@@ -874,7 +848,14 @@ export default {
   methods: {
     handleCheckChange: function(data, checked, indeterminate) {
       if (data.isLeaf) {
-        this.$http.get('/api/itemdata').then(res => {
+        this.$http.get('http://localhost:8080/get_monitordata', {params: {
+          ip: "10.60.38.181",
+          port: "12000",
+          hostid: this.paramsHostid,
+          key: data.label,
+          timeFrom: this.timeFrom,
+          timeTill: this.timeTill
+        }}).then(res => {
           data.data = res.body
           if (!data.rendered) {
             
@@ -886,20 +867,18 @@ export default {
         }
         data.rendered = !data.rendered;
         })
-        // if (!data.rendered) {
-        //   let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
-        //   console.log(data.data)
-        //   let option = this.getOption(data.data, data.label, false);
-        //   let detailOption = this.getOption(data.data, data.label, true, host[0].label);
-        //   data.chartOptions = option;
-        //   data.chartDetailOptions = detailOption;
-        // }
-        // data.rendered = !data.rendered;
       } else {
         if (!data.spread && !data.firstSpread) {
           let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
           data.children.forEach(function(element) {
-            that.$http.get('/api/itemdata').then(res => {
+            that.$http.get('http://localhost:8080/get_monitordata', {params: {
+            ip: "10.60.38.181",
+            port: "12000",
+            hostid: that.paramsHostid,
+            key: element.label,
+            timeFrom: that.timeFrom,
+            timeTill: that.timeTill
+        }}).then(res => {
               element.data = res.body
           
             if (!element.rendered) {
@@ -935,6 +914,7 @@ export default {
         this.$refs.tree.setChecked(data, !data.rendered)
       }
     },
+
     handleEloptionChange: function(child) {
       var index = 0
       let $ = this
@@ -942,7 +922,14 @@ export default {
         for(index = child.oldSelectHosts.length; index < child.selectHosts.length; index += 1) {
           var hostid = child.selectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
           //TODO: 请求数据
-          this.$http.get('/api/itemdata').then(res => {
+          this.$http.get('http://localhost:8080/get_monitordata', {params: {
+            ip: "10.60.38.181",
+            port: "12000",
+            hostid: hostid,
+            key: child.label,
+            timeFrom: child.time.length > 0 ? parseInt( new Date(child.time[0]).getTime() / 1000) : this.timeFrom,
+            timeTill: child.time.length > 0 ? parseInt( new Date(child.time[1]).getTime() / 1000) : this.timeTill
+        }}).then(res => {
             $.UpdateCompareOption(hostname, res.body, child, 'add')
           })
           
@@ -985,10 +972,30 @@ export default {
       this.selectHostsItem = label
       console.log(this.selectHostsItem)
     },
+
     handleTimePickerChange: function(child) {
       //TODO:请求数据
-      console.log(child.time)
+      let timeFrom = parseInt( new Date(child.time[0]).getTime() / 1000)
+      let timeTill = parseInt( new Date(child.time[1]).getTime() / 1000)
+      this.$http.get('http://localhost:8080/get_monitordata', {params: {
+          ip: "10.60.38.181",
+          port: "12000",
+          hostid: this.paramsHostid,
+          key: child.label,
+          timeFrom: timeFrom,
+          timeTill: timeTill
+        }}).then(res => {
+          console.log(res)
+            child.data = res.body
+            let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
+            let option = this.getOption(child.data, child.label, false);
+            let detailOption = this.getOption(child.data, child.label, true, host[0].label);
+            child.chartOptions = option;
+            child.chartDetailOptions = detailOption;
+          }
+        )
     },
+
     myRefresh: function(tab) {
       setTimeout(function() {
         var myCharts = [];

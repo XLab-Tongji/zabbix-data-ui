@@ -11,10 +11,6 @@
                 <div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix">
                   <span class="ui-jqgrid-title">{{tableTitle}}</span>
                 </div>
-
-                <div class="download-button">
-                  <button type="button" class="btn btn-w-m btn-info" style="height: 100%"><i class="fa fa-download"></i> Download</button>
-                </div>
                 </div>
 
                 <div class="ui-state-default ui-jqgrid-hdiv" style="width: 1130px;">

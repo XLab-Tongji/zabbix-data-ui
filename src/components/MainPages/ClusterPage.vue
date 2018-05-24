@@ -1,10 +1,9 @@
 <template>
-  <div id = "clusterPage" style="padding-bottom:30px">
-    <div class=" widget lazur-bg p-xl animated" v-bind:class="{ fadeOutRight:server.fadeActive }"  v-for="(server,index) in servers">
-      <h2>
-          {{server.host}}
-      </h2>
-      <ul class="list-unstyled m-t-md">
+  <div id = "clusterPage" style="padding-bottom:30px" class="my-cluster">
+    <div class="animated cluster-block" v-bind:class="{ fadeOutRight:server.fadeActive }"  v-for="(server,index) in servers">
+      <div class=" widget lazur-bg p-xl cluster-detail">
+      <h1>Cluster: {{server.name}}</h1>
+      <ul class="list-unstyled m-t-md ">
           <li>
             <span class="fa fa-at m-r-xs"></span>
             <label>Ip:</label>
@@ -26,9 +25,10 @@
             {{server.description}}
           </li>
       </ul>
-      <div style="display:inline-block">
+      <div style="display:inline-block" class="cluster-btn">
         <button type="button" class="btn btn-w-m btn-primary" @click="goHostPage(server.ip,server.port)">Hosts</button>
         <button type="button" class="btn btn-w-m btn-danger" @click="deleteCluster(server,index)">Delete</button>
+      </div>
       </div>
     </div>
     <div class="addBtn">
@@ -133,5 +133,26 @@ export default {
     position: fixed;
     bottom: 25px;
     right: 30px;
+    z-index: 1001;
+  }
+  .cluster-block {
+    height: 300px;
+    width: 30%;
+    /* display:inline-block; */
+    margin: 15px;
+  }
+  .my-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 35px
+  }
+  .cluster-detail {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+  .cluster-btn {
+    position: absolute;
+    bottom: 25px;
   }
 </style>

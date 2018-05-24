@@ -13,11 +13,11 @@
           @node-collapse="handleNodeCollapse">
         </el-tree>
       </div> -->
+      
+      <div class="my-hosts">
       <div v-for="(host,index) in hosts" class="hostblock animated" v-bind:class="{ fadeOutRight:host.fadeActive }">
-        <div class=" widget lazur-bg p-xl ">
-          <h2>
-              {{host.host}}
-          </h2>
+        <div class=" widget lazur-bg p-xl host-detail">
+          <h1>Host: {{host.name}}</h1>
           <ul class="list-unstyled m-t-md">
             <li>
                 <span class="fa fa-at m-r-xs"></span>
@@ -29,23 +29,45 @@
                 <label>Name:</label>
                 {{host.name}}
             </li>
-            <li>
-                <span class="fa fa-file-text m-r-xs"></span>
-                <label>Description:</label>
-                {{host.description}}
+            <li class="tooltip-demo">
+                <!-- <span class="fa fa-file-text m-r-xs"></span>
+                <label>Description:</label> -->
+                <div class="des-block" data-toggle="tooltip" data-placement="bottom" :title="host.description">
+                  <span class="fa fa-file-text m-r-xs"></span>
+                  <label>Description:</label>
+                  {{host.description}}
+                </div>
             </li>
           </ul>
-          <div style="display:inline-block">
-        <button type="button" class="btn btn-w-m btn-primary" @click="goItemPage(host.hostid)">Items</button>
-        <button type="button" class="btn btn-w-m btn-danger" @click="deleteHost(host,index)">Delete</button>
-      </div>
+          <div class="host-button">
+            <div>
+              <button style="width: 108.75px; height: 40px" type="button" class="btn  btn-primary" @click="goItemPage(host.hostid)">Items</button>
+            </div>
+            <!-- <button type="button" class="btn btn-w-m btn-danger" @click="deleteHost(host,index)">Delete</button>
+            <button type="button" class="btn btn-w-m btn-success">Download</button> -->
+            <div style="padding-left: 10px">
+              <el-dropdown @command="handleCommand">
+                <el-button type="primary">
+                  Actions<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="{type: 'download', 'host': host, 'index': index}">Download</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'delete', 'host': host, 'index': index}">Delete</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </div>
         </div>
         
+        
       </div>
+      
     <!-- </div> -->
     <div class="addBtn">
       <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addHost"><i class="fa fa-plus"></i></button>
     </div>
+    </div>
+    
   </div>
 </template>
 
@@ -163,6 +185,11 @@ export default {
     // goItemPage: function(hostid) {
     //   this.$router.push({ path: '/3/'+hostid })
     // },
+    handleCommand: function(command) {
+      if(command.type === "delete") {
+        this.deleteHost(command.host, command.index)
+      }
+    },
     deleteHost: function(host, index) {
       this.$confirm('确定删除?','提示',{
         confirmButtonText: '确定',
@@ -214,7 +241,7 @@ export default {
     //     console.log(error);
     //   }
     // );
-    this.$http.get('/api/hosts').then(res => {
+    this.$http.get('http://localhost:8080/get_host', {params: {ip: "10.60.38.181", port: "12000"}}).then(res => {
       console.log(res)
       res.body.forEach(element => {
         element.label = element.name = element.host
@@ -229,20 +256,40 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .hostblock {
-    min-width: 25%;
-    max-width: 30%;
-    display:inline-block;
-    margin:10px;
-    padding-bottom: 20px;
+    height: 300px;
+    width: 30%;
+    /* display:inline-block; */
+    margin: 15px;
+    
+  }
+  .my-hosts {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 35px
+  }
+  .host-detail {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+  .host-button {
+    position: absolute;
+    bottom: 25px;
+    left: 60px;
+    display: flex;
+    justify-content: flex-end;
   }
   .addBtn {
     position: fixed;
     bottom: 25px;
     right: 30px;
+    z-index: 99999;
   }
-  .showBtn {
-    position: fixed;
-    bottom: 90px;
-    right: 30px;
+  .des-block {
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 </style>

@@ -17,7 +17,7 @@
               </ul>
             </div>
             <div class="logo-element">
-              IN+
+              ZB+
             </div>
           </li>
           <li :class="{ active:isZabbixPage }">
