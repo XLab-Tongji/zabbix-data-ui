@@ -849,8 +849,8 @@ export default {
     handleCheckChange: function(data, checked, indeterminate) {
       if (data.isLeaf) {
         this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
-          ip: that.$route.params.ip,
-          port: that.$route.params.port,
+          ip: this.$route.params.ip,
+          port: this.$route.params.port,
           hostid: this.paramsHostid,
           key: data.label,
           timeFrom: this.timeFrom,
