@@ -848,9 +848,9 @@ export default {
   methods: {
     handleCheckChange: function(data, checked, indeterminate) {
       if (data.isLeaf) {
-        this.$http.get('http://localhost:8080/get_monitordata', {params: {
-          ip: "10.60.38.181",
-          port: "12000",
+        this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+          ip: that.$route.params.ip,
+          port: that.$route.params.port,
           hostid: this.paramsHostid,
           key: data.label,
           timeFrom: this.timeFrom,
@@ -871,9 +871,9 @@ export default {
         if (!data.spread && !data.firstSpread) {
           let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
           data.children.forEach(function(element) {
-            that.$http.get('http://localhost:8080/get_monitordata', {params: {
-            ip: "10.60.38.181",
-            port: "12000",
+            that.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+            ip: that.$route.params.ip,
+            port: that.$route.params.port,
             hostid: that.paramsHostid,
             key: element.label,
             timeFrom: that.timeFrom,
@@ -906,7 +906,6 @@ export default {
     },
     handleNodeCollapse: function(data, node, self) {
       data.spread = !data.spread;
-      console.log(data.spread);
     },
     handleNodeClick: function(data) {
      
@@ -922,9 +921,9 @@ export default {
         for(index = child.oldSelectHosts.length; index < child.selectHosts.length; index += 1) {
           var hostid = child.selectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
           //TODO: 请求数据
-          this.$http.get('http://localhost:8080/get_monitordata', {params: {
-            ip: "10.60.38.181",
-            port: "12000",
+          this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+            ip: this.$route.params.ip,
+            port: this.$route.params.port,
             hostid: hostid,
             key: child.label,
             timeFrom: child.time.length > 0 ? parseInt( new Date(child.time[0]).getTime() / 1000) : this.timeFrom,
@@ -974,18 +973,19 @@ export default {
     },
 
     handleTimePickerChange: function(child) {
-      //TODO:请求数据
       let timeFrom = parseInt( new Date(child.time[0]).getTime() / 1000)
       let timeTill = parseInt( new Date(child.time[1]).getTime() / 1000)
-      this.$http.get('http://localhost:8080/get_monitordata', {params: {
-          ip: "10.60.38.181",
-          port: "12000",
+      this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+          ip: this.$route.params.ip,
+          port: this.$route.params.port,
           hostid: this.paramsHostid,
           key: child.label,
           timeFrom: timeFrom,
           timeTill: timeTill
         }}).then(res => {
           console.log(res)
+            child.selectHosts = []
+            child.oldSelectHosts = []
             child.data = res.body
             let that = this, host = this.hosts.filter(t => t.hostid == that.paramsHostid)
             let option = this.getOption(child.data, child.label, false);
@@ -1127,9 +1127,7 @@ export default {
         var valueOrigin = []
         
         data.forEach(element => {
-          //var Evalue = element.value * 1 + (Math.random() * 2 - 1) * 1000000
           newData.push([element.timeStamp * 1000 , element.value])
-          //value.push(Evalue)
         })
 
         childOptionSeries[0].data.forEach(element => {
@@ -1193,18 +1191,10 @@ export default {
       });
     };
 
-    // this.$http.get('/api/hosts').then(res => {
-    //   res.body.forEach(element => {
-    //     let host = {
-    //       label: element.host,
-    //       hostid: element.hostid
-    //     }
-    //     this.hosts.push(host)
-    //   })
-    // })
     this.hosts = this.$route.params.hosts
 
     this.paramsHostid = this.$route.params.hostid
+
     let hostid = this.paramsHostid
     this.hostsForOption = this.hosts.filter(t => t.hostid !== hostid)
   }

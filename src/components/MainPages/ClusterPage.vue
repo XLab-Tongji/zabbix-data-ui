@@ -44,60 +44,19 @@ export default {
     return {
       servers: [
         {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 2",
+          ip: "10.60.38.181",
+          port: "12000",
+          name: "Server",
           description: "cluster server",
 
           fadeActive: false
-        },
-        {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 1",
-          description: "cluster server",
-
-          fadeActive: false
-        },
-        {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 1",
-          description: "cluster server",
-
-          fadeActive: false
-        },
-        {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 1",
-          description: "cluster server",
-
-          fadeActive: false
-        },
-        {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 1",
-          description: "cluster server",
-
-          fadeActive: false
-        },
-        {
-          ip: "127.0.0.1",
-          port: "8080",
-          name: "Server 1",
-          description: "cluster server",
-
-          fadeActive: false
-        },
+        }
       ]
     }
   },
   methods: {
     goHostPage: function(ip,port) {
       this.$router.push({name: "HostPage", params: {ip: ip, port: port}})
-      //this.$router.push({ path: '2/' + ip + port})
     },
     deleteCluster: function(server,index) {
       this.$confirm('确定删除?','提示',{
