@@ -41,7 +41,7 @@
           </ul>
           <div class="host-button">
             <div>
-              <button style="width: 108.75px; height: 40px" type="button" class="btn  btn-primary" @click="goItemPage(host.hostid)">Items</button>
+              <button style="width: 108.75px; height: 40px" type="button" class="btn  btn-primary" @click="goItemPage(host)">Items</button>
             </div>
             <!-- <button type="button" class="btn btn-w-m btn-danger" @click="deleteHost(host,index)">Delete</button>
             <button type="button" class="btn btn-w-m btn-success">Download</button> -->
@@ -84,11 +84,12 @@ export default {
     };
   },
   methods: {
-    goItemPage: function(hostid) {
+    goItemPage: function(host) {
       let that = this
       this.$router.push({name: 'ItemDataPage', params: {
         userid: that.$route.params.userid, 
-        hostid: hostid, 
+        hostid: host.hostid, 
+        hostname: host.name,
         hosts: this.hosts,
         ip: this.$route.params.ip,
         port: this.$route.params.port

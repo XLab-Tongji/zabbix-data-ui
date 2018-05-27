@@ -10,12 +10,13 @@
         <div id="filter" class="tab-pane active">
           <div class="panel-body">
           <div>
-              <h2>{{paramsHostid}}&nbsp-&nbsp{{hosts.filter(t => t.hostid == paramsHostid)[0].name}}</h2>
+              <h2>{{paramsHostid}}&nbsp-&nbsp {{paramsHostname}}</h2>
             </div>
           <hr>
-          <div style="display:flex;">
+   
+          <div >
             
-            <div>
+            <!-- <div>
                 <el-tree class="el_tree_style"
                   :data="items"
                   show-checkbox
@@ -27,10 +28,37 @@
                   @node-collapse="handleNodeCollapse"
                   @node-click="handleNodeClick">
                 </el-tree>
+            </div> -->
+            <div style="display:flex;">
+              <strong class="select-box">Main class:</strong>
+              <div style="padding-left: 5px">
+                
+                <el-select v-model="selectedClass" multiple placeholder="Empty" @change="classSelectChange">
+                    <el-option
+                        v-for="item in items"
+                        :key="item.label"
+                        :label="item.label"
+                        :value="item.label">
+                    </el-option>
+                </el-select>
+              </div>
+
+              <strong class="select-box">Items:</strong>
+              <div style="padding-left: 5px; width: 65%">
+                <el-select v-model="selectedItems" multiple placeholder="Empty" @change="itemsSelectChange" style="width: 100%">
+                    <el-option
+                        v-for="child in itemsChilren"
+                        :key="child.label"
+                        :label="child.label"
+                        :value="child.label">
+                    </el-option>
+                </el-select>
+              </div>
             </div>
+            <hr>
             <div >
               <div v-for="item in items" style="display:flex;flex-wrap: wrap">
-                <div v-for="child in item.children" v-if="child.rendered" >
+                <div v-for="child in item.children" v-if="selectedItems.indexOf(child.label) !== -1" >
                   <eChart :options="child.chartOptions" name="myCharts" style="width: 500px"></eChart>
                 </div>
               </div>
@@ -42,7 +70,7 @@
           <div class="panel-body">
             <div v-for="item in items">
               <div v-for="child in item.children">
-                <div v-if="child.rendered" >
+                <div v-if="selectedItems.indexOf(child.label) !== -1" >
                   <item-table :table-title="child.label" :table-rows="child.data"></item-table>
                   <hr>
                 </div>
@@ -53,9 +81,9 @@
         <div id="charts" class="tab-pane" style="width:100%  ;">
           <div class="panel-body" style="width:100%  ;">
             <div v-for="item in items" style="width:100%  ;">
-              <div v-for="child in item.children" v-if="child.rendered" style="width:100% ">
+              <div v-for="child in item.children" style="width:100% " v-if="selectedItems.indexOf(child.label) !== -1">
                 
-                <div v-if="child.rendered" style="width:100%;padding:20px;" >
+                <div  style="width:100%;padding:20px;" >
                   
                   <div class="ibox-tools configure" style="top: 0px">
                     <el-date-picker
@@ -191,9 +219,13 @@ export default {
       ],
       options: [],
       paramsHostid: null,
+      paramsHostname: null,
 
-      //items need to be rendered
       itemIds: [],
+
+      selectedClass: [],
+      selectedItems: [],
+      oldSelectedItems: [],
 
       selectHosts: [],
       selectHostsItem: '',
@@ -216,8 +248,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -228,8 +260,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -240,8 +272,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -252,8 +284,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -264,8 +296,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -276,8 +308,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -288,8 +320,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -300,8 +332,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -312,8 +344,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -324,8 +356,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -336,8 +368,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -348,8 +380,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -360,8 +392,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -381,8 +413,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -393,8 +425,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -413,8 +445,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -425,8 +457,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -437,8 +469,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -449,8 +481,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -461,8 +493,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -481,8 +513,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -493,8 +525,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -505,8 +537,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -517,8 +549,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -529,8 +561,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -541,8 +573,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -553,8 +585,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -565,8 +597,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -577,8 +609,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -589,8 +621,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -613,8 +645,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -625,8 +657,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -637,8 +669,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -649,8 +681,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -661,8 +693,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -673,8 +705,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -685,8 +717,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -697,8 +729,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -709,8 +741,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -721,8 +753,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -743,8 +775,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -755,8 +787,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -776,8 +808,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -788,8 +820,8 @@ export default {
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: [],
-              chartDetailOptions: [],
+              chartOptions: null,
+              chartDetailOptions: null,
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -799,6 +831,7 @@ export default {
           rendered: false
         }
       ],
+      itemsChilren: [],
 
       itemId: "28330",
       valueType: "3",
@@ -846,6 +879,93 @@ export default {
     itemTable
   },
   methods: {
+    classSelectChange: function(data) {
+      this.itemsChilren = []
+      this.selectedItems = []
+      let that = this
+      this.selectedClass.forEach(element => {
+        let node = this.items.filter(t => t.label === element)
+        node[0].children.forEach(child => {
+          that.itemsChilren.push(child)
+        })
+      })
+    },
+    itemsSelectChange: function(data) {
+      var index = 0
+      let $ = this
+      if(this.selectedItems.length > this.oldSelectedItems.length) {
+        for(index = this.oldSelectedItems.length; index < this.selectedItems.length; index += 1) {
+          this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+            ip: this.$route.params.ip,
+            port: this.$route.params.port,
+            hostid: this.paramsHostid,
+            key: this.selectedItems[index],
+            timeFrom: this.timeFrom,
+            timeTill: this.timeTill
+        }}).then(res => {
+            let child = this.searchChild($.selectedItems[index - 1])
+            child.data = res.body
+            let host = this.hosts.filter(t => t.hostid == $.paramsHostid)
+            let option = this.getOption(child.data, child.label, false);
+            let detailOption = this.getOption(child.data, child.label, true, host[0].label);
+            child.chartOptions = option;
+            child.chartDetailOptions = detailOption;
+          }, err => {
+            console.log("error")
+          })
+        }
+      } else {
+       
+        for(index = 0; index < this.oldSelectedItems.length; index += 1) {
+          
+          if(this.selectedItems.indexOf(this.oldSelectedItems[index]) === -1) {
+            let child = this.searchChild(this.oldSelectedItems[index])
+            child.data = []
+            child.chartOptions = null
+            child.chartDetailOptions = null
+          }
+        }
+      }
+      this.oldSelectedItems = this.selectedItems
+    },
+    getItemsData: function() {
+      var index = 0
+      let $ = this
+      if(this.selectedItems.length > this.oldSelectedItems.length) {
+        for(index = this.oldSelectedItems.length; index < this.selectedItems.length; index += 1) {
+          this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
+            ip: this.$route.params.ip,
+            port: this.$route.params.port,
+            hostid: this.paramsHostid,
+            key: this.selectedItems[index],
+            timeFrom: this.timeFrom,
+            timeTill: this.timeTill
+        }}).then(res => {
+            let child = this.searchChild($.selectedItems[index - 1])
+            console.log("child is " + child)
+            child.data = res.body
+            let host = this.hosts.filter(t => t.hostid == $.paramsHostid)
+            let option = this.getOption(child.data, child.label, false);
+            let detailOption = this.getOption(child.data, child.label, true, host[0].label);
+            child.chartOptions = option;
+            child.chartDetailOptions = detailOption;
+          })
+        }
+      } else {
+       
+        for(index = 0; index < this.oldSelectedItems.length; index += 1) {
+          
+          if(this.selectedItems.indexOf(this.oldSelectedItems[index]) === -1) {
+            let child = this.searchChild(this.oldSelectedItems[index])
+            child.data = []
+            child.chartOptions = []
+            child.chartDetailOptions = []
+          }
+        }
+      }
+      this.oldSelectedItems = this.selectedItems
+    },
+
     handleCheckChange: function(data, checked, indeterminate) {
       if (data.isLeaf) {
         this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
@@ -920,7 +1040,6 @@ export default {
       if(child.selectHosts.length > child.oldSelectHosts.length) {
         for(index = child.oldSelectHosts.length; index < child.selectHosts.length; index += 1) {
           var hostid = child.selectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
-          //TODO: 请求数据
           this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
             ip: this.$route.params.ip,
             port: this.$route.params.port,
@@ -946,7 +1065,6 @@ export default {
         }
       }
       child.oldSelectHosts = child.selectHosts
-      console.log(child)
     },
     handleEloptionCollapse: function (state) {
       this.select_host_item_data = []
@@ -973,6 +1091,9 @@ export default {
     },
 
     handleTimePickerChange: function(child) {
+      child.chartOptions = []
+      child.chartDetailOptions = []
+      child.data = []
       let timeFrom = parseInt( new Date(child.time[0]).getTime() / 1000)
       let timeTill = parseInt( new Date(child.time[1]).getTime() / 1000)
       this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
@@ -984,6 +1105,7 @@ export default {
           timeTill: timeTill
         }}).then(res => {
           console.log(res)
+            
             child.selectHosts = []
             child.oldSelectHosts = []
             child.data = res.body
@@ -996,42 +1118,6 @@ export default {
         )
     },
 
-    myRefresh: function(tab) {
-      setTimeout(function() {
-        var myCharts = [];
-        myCharts = document.getElementsByName("myCharts");
-        myCharts.forEach(function(element) {
-          element.__vue__.resize();
-        });
-      }, 1);
-    },
-    getItemData: function() {
-      this.$http
-        .get(zabbixUrl + "/itemData", {
-          params: {
-            itemId: this.itemId,
-            valueType: this.valueType
-            //      timeFrom: this.timeFrom,
-            //      timeTill: this.timeTill,
-          }
-        })
-        .then(
-          function(response) {
-            console.log(response);
-            this.data = response.body;
-          },
-          function(error) {
-            console.log(error);
-          }
-        );
-    },
-    setOptions: function() {
-      for (var i = 0; i < this.optionData.length; i = i + 1) {
-        let option = this.getOption(this.optionData[i]);
-        this.options.push(option);
-      }
-      console.log(this.options);
-    },
     getOption: function(data, title, showSth, hostName) {
       var newData = [];
       var $ = this
@@ -1117,7 +1203,7 @@ export default {
           }
         ]
       };
-    },
+    }, 
     UpdateCompareOption: function(hostname, data, child, opration) {
       var childOptionY = child.chartDetailOptions.yAxis
       var childOptionSeries = child.chartDetailOptions.series
@@ -1172,6 +1258,8 @@ export default {
         console.log(child.chartDetailOptions.yAxis)
       }
     },
+    
+    //辅助函数
     myOptionFilter: function(arr, name) {
       arr.forEach((element, index) => {
         if(element.name === name) {
@@ -1180,7 +1268,28 @@ export default {
         }
       })
       return false
-    }
+    },
+    searchChild: function(childLabel) {
+      var index = 0
+      var i = 0
+      for(index = 0; index < this.items.length; index += 1) {
+        let item = this.items[index]
+        for(i = 0; i < item.children.length; i += 1) {
+          if(childLabel === item.children[i].label) {
+            return item.children[i]
+          }
+        }
+      }
+    },
+    myRefresh: function(tab) {
+      setTimeout(function() {
+        var myCharts = [];
+        myCharts = document.getElementsByName("myCharts");
+        myCharts.forEach(function(element) {
+          element.__vue__.resize();
+        });
+      }, 1);
+    },
   },
   mounted() {
     window.onresize = function() {
@@ -1194,9 +1303,10 @@ export default {
     this.hosts = this.$route.params.hosts
 
     this.paramsHostid = this.$route.params.hostid
+    this.paramsHostname = this.$route.params.hostname
 
     let hostid = this.paramsHostid
-    this.hostsForOption = this.hosts.filter(t => t.hostid !== hostid)
+    this.hostsForOption = this.$route.params.hosts.filter(t => t.hostid !== hostid)    
   }
 };
 </script>
@@ -1222,5 +1332,9 @@ export default {
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   background-color: #1ab394;
   border-color: #1ab394;
+}
+.select-box {
+  padding-left: 20px; 
+  padding-top: 10px;
 }
 </style>

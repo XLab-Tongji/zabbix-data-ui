@@ -54,7 +54,7 @@ export default new Router({
           component: ItemComparePage
         },
         {
-          path: '3/:hostid',
+          path: 'itemdata/:hostid/:hostname',
           name: 'ItemDataPage',
           component: ItemDataPage
         },
