@@ -67,11 +67,15 @@
       <button class="btn btn-primary btn-circle btn-lg dim" type="button" @click="addHost"><i class="fa fa-plus"></i></button>
     </div>
     </div>
+
+    <selectbox @selectTime="selectTimeChange" @closeBox="closeBox" v-if="showBox"></selectbox>
     
   </div>
 </template>
 
 <script>
+import selectbox from '../component/SelectBox.vue'
+import {getHosts} from '../../api.js'
 export default {
   name: "HostPage",
   data() {
@@ -80,10 +84,28 @@ export default {
         children: "children",
         label: "label"
       },
-      hosts: []
+      hosts: [],
+
+      showBox: false,
+      hostToDownload: null
     };
   },
+  components: {
+    selectbox
+  },
   methods: {
+    selectTimeChange: function(time) {
+      this.$http.get(global.zabbixUrl + '/filedownload', { params: {
+        hostId: this.hostToDownload.hostid,
+        timeFrom: time[0],
+        timeTill: time[1]
+      }}).then(res => {
+        console.log(res)
+      })
+    },
+    closeBox: function(data) {
+      this.showBox = false
+    },
     goItemPage: function(host) {
       let that = this
       this.$router.push({name: 'ItemDataPage', params: {
@@ -108,6 +130,9 @@ export default {
     handleCommand: function(command) {
       if(command.type === "delete") {
         this.deleteHost(command.host, command.index)
+      } else if(command.type === "download") {
+        this.hostToDownload = this.hosts[command.index]
+        this.showBox = true
       }
     },
     deleteHost: function(host, index) {
@@ -127,32 +152,9 @@ export default {
         toastr.success("取消删除")
       })
     }
-    //  handleCheckChange: function(data, checked, indeterminate) {
-    //   console.log("yes");
-    //   if (data.isLeaf) {
-    //     //TODO:调用接口
-    //     data.rendered = !data.rendered;
-    //   } else {
-    //     if (!data.spread && !data.firstSpread) {
-    //       let that = this;
-    //       data.children.forEach(function(element) {
-    //         element.rendered = !element.rendered;
-    //       });
-    //     }
-    //   }
-    // },
-    // handleNodeExpand: function(data, node, self) {
-    //   if (!data.firstSpread) data.firstSpread = !data.firstSpread;
-    //   data.spread = !data.spread;
-    //   console.log(data.spread);
-    // },
-    // handleNodeCollapse: function(data, node, self) {
-    //   data.spread = !data.spread;
-    //   console.log(data.spread);
-    // },
   },
   mounted() {
-    this.$http.get(global.zabbixUrl + '/get_host', {params: {ip: this.$route.params.ip, port: this.$route.params.port}}).then(res => {
+    getHosts(this, this.$route.params.ip, this.$route.params.port).then(res => {
       res.body = res.body.filter(t => t.hostid !== "10084")
       res.body.forEach(element => {
         element.label = element.name = element.host

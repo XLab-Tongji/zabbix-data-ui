@@ -131,6 +131,7 @@
 
 <script>
 import itemTable from '../component/ItemTable.vue'
+import {getItemsData} from '../../api.js'
 export default {
   name: "itemDataPage",
   data() {
@@ -895,14 +896,8 @@ export default {
       let $ = this
       if(this.selectedItems.length > this.oldSelectedItems.length) {
         for(index = this.oldSelectedItems.length; index < this.selectedItems.length; index += 1) {
-          this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
-            ip: this.$route.params.ip,
-            port: this.$route.params.port,
-            hostid: this.paramsHostid,
-            key: this.selectedItems[index],
-            timeFrom: this.timeFrom,
-            timeTill: this.timeTill
-        }}).then(res => {
+          getItemsData(this, this.$route.params.ip, this.$route.params.port, this.paramsHostid, this.selectedItems[index], this.timeFrom, this.timeTill)
+          .then(res => {
             let child = this.searchChild($.selectedItems[index - 1])
             child.data = res.body
             let host = this.hosts.filter(t => t.hostid == $.paramsHostid)
@@ -1040,14 +1035,10 @@ export default {
       if(child.selectHosts.length > child.oldSelectHosts.length) {
         for(index = child.oldSelectHosts.length; index < child.selectHosts.length; index += 1) {
           var hostid = child.selectHosts[index], hostname = $.hosts.filter(t => t.hostid == hostid)[0].label
-          this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
-            ip: this.$route.params.ip,
-            port: this.$route.params.port,
-            hostid: hostid,
-            key: child.label,
-            timeFrom: child.time.length > 0 ? parseInt( new Date(child.time[0]).getTime() / 1000) : this.timeFrom,
-            timeTill: child.time.length > 0 ? parseInt( new Date(child.time[1]).getTime() / 1000) : this.timeTill
-        }}).then(res => {
+          getItemsData(this, this.$route.params.ip, this.$route.params.port, hostid, child.label,
+           child.time.length > 0 ? parseInt( new Date(child.time[0]).getTime() / 1000) : this.timeFrom, 
+           child.time.length > 0 ? parseInt( new Date(child.time[1]).getTime() / 1000) : this.timeTill)
+          .then(res => {
             $.UpdateCompareOption(hostname, res.body, child, 'add')
           })
           
@@ -1091,19 +1082,13 @@ export default {
     },
 
     handleTimePickerChange: function(child) {
-      child.chartOptions = []
-      child.chartDetailOptions = []
+      child.chartOptions = {}
+      child.chartDetailOptions = {}
       child.data = []
       let timeFrom = parseInt( new Date(child.time[0]).getTime() / 1000)
       let timeTill = parseInt( new Date(child.time[1]).getTime() / 1000)
-      this.$http.get(global.zabbixUrl + '/get_monitordata', {params: {
-          ip: this.$route.params.ip,
-          port: this.$route.params.port,
-          hostid: this.paramsHostid,
-          key: child.label,
-          timeFrom: timeFrom,
-          timeTill: timeTill
-        }}).then(res => {
+      getItemsData(this, this.$route.params.ip, this.$route.params.port, this.paramsHostid, child.label, timeFrom, timeTill)
+      .then(res => {
           console.log(res)
             
             child.selectHosts = []

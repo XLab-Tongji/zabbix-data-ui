@@ -4,23 +4,27 @@
         <div class="row">
 
             <div class="col-md-6">
-                <h2 class="font-bold">Welcome to IN+</h2>
+                <h2 class="font-bold">Welcome to Zabbix-data-UI of Xlab-Tongji</h2>
 
                 <p>
-                    Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+                    Perfectly designed and precisely prepared UI is enough for you to supervise your servers.
                 </p>
 
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    The user interface is simply easy for any people to use, making them on top of the world.
                 </p>
 
                 <p>
-                    When an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    After you using this excellent UI, you will think it happier to conduct performance monitoring.
                 </p>
 
                 <p>
-                    <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>
+                    It has provided service for more than 4 people in Tongji university, gaining good reputation.
                 </p>
+                <p>
+                    <small>We are continually improving this tool for better experience.</small>
+                </p>
+              
 
             </div>
             <div class="col-md-6">
@@ -44,7 +48,7 @@
                         <a class="btn btn-sm btn-white btn-block" @click="goRegister">Create an account</a>
                     </form>
                     <p class="m-t">
-                        <small>Inspinia we app framework base on Bootstrap 3 © 2014</small>
+                        <small>Let's start the fantastic journey in Zabbix-data-UI's world</small>
                     </p>
                 </div>
             </div>
@@ -52,14 +56,13 @@
         <hr>
         <div class="row">
             <div class="col-md-6">
-                Copyright Example Company
+                Copyright Xlab of Software College, Tongji University
             </div>
             <div class="col-md-6 text-right">
-               <small>© 2014-2015</small>
+               <small>© 2017-2018</small>
             </div>
         </div>
     </div>
-
   </div>
 </template>
 

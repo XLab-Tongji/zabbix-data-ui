@@ -44,7 +44,7 @@ export default new Router({
           component: ClusterPage
         },
         {
-          path: '2/:ip/:port',
+          path: 'hosts/:ip/:port',
           name: 'HostPage',
           component: HostPage
         },
