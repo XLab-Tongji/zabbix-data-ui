@@ -26,16 +26,20 @@
         </el-table-column>
 
     </el-table>
+    <div style="position: fixed;bottom: 40px;right: 10px">
     <button type="button" class="btn btn-w-m btn-primary" style="margin-top:10px" @click="goHostConfig">Submit</button>
     </div>
+   </div>
 </template>
 
 <script>
+import { getGroups } from "../../api.js"
 
 export default {
+    
   data() {
     return {
-        data: this.$store.state.zabbixGroup.zabbixGroups
+        data: this.$store.state.zabbixGroup.zabbixGroups.groups
     }
   },
   methods: {
@@ -58,7 +62,7 @@ export default {
       },
       getSelection: function() {
           var selections = []
-          this.$store.state.zabbixGroup.zabbixGroups.forEach(element => {
+          this.$store.state.zabbixGroup.zabbixGroups.groups.forEach(element => {
               if(element.selected) {
                   selections.push(element)
               }
@@ -69,14 +73,32 @@ export default {
           let ip = this.$route.params.ip
             let port = this.$route.params.port
           this.$router.push({name: 'HostConfigPage', params : {ip: ip, port: port}})
-      }
+      },
+
+      initGroups: function() {
+        let ip = this.$route.params.ip
+        let port = this.$route.params.port
+        let that = this
+        getGroups(this, ip, port).then((res) => {
+          this.groups = res.body
+          this.groups.forEach(group => {
+            group.selected = false
+          })
+          this.$store.dispatch('getZabbixGroup', {groups: this.groups})
+        })
+    }
   },
   computed: {
  
   },
   mounted() {
-      var selection = this.getSelection()
-      this.toggleSelection(selection)
+
+      if(this.$store.state.zabbixGroup.zabbixGroups.groups === undefined) {
+        this.initGroups()
+      } else {
+        var selection = this.getSelection()
+        this.toggleSelection(selection)
+      }
   }
 }
 </script>

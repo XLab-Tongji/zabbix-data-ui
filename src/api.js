@@ -15,3 +15,21 @@ export function getItemsData(context, ip, port, hostid, key, timeFrom, timeTill)
         timeTill: timeTill
     }})
 }
+
+export function getCluster(context) {
+    return context.$http.get(global.zabbixUrl + '/get_cluster')
+}
+
+export function getTemplates(context, ip ,port) {
+    return context.$http.get(global.zabbixUrl + '/get_template', {params: {
+        ip: ip,
+        port: port
+    }})
+}
+
+export function getGroups(context, ip ,port) {
+    return context.$http.get(global.zabbixUrl + '/get_group', {params: {
+        ip: ip,
+        port: port
+    }})
+}

@@ -35,6 +35,7 @@
         <div class="form-group">
           <div class="col-sm-4 col-sm-offset-2">
             <button class="btn btn-white" @click="cancel">Cancel</button>
+            <button class="btn btn-primary" @click="goBack">Back</button>
             <button class="btn btn-primary" @click="successCreateHost">Apply</button>
           </div>
         </div>
@@ -44,6 +45,8 @@
 </template>
 
 <script>
+import { getTemplates } from "../../api.js"
+import { getGroups } from "../../api.js"
 name: 'hostConfigPage'
 export default {
   data() {
@@ -51,15 +54,25 @@ export default {
       host_name: "Host",
       host_group: "",
       host_templates: "",
-      host_description: "My monitering host"
+      host_description: "My monitering host",
+
+      templates: [],
+      groups: []
     }
   },
   methods: {
     cancel: function() {
-      host_name = "Host",
-      host_group = "",
-      host_templates = "",
-      host_description = "My monitering host"
+      this.host_name = "Host",
+      this.host_group = "",
+      this.host_templates = "",
+      this.host_description = "My monitering host"
+      this.$store.commit('RESET_GROUP')
+      this.$store.commit('RESET_TEMPLATE')
+    },
+    goBack: function() {
+      let ip = this.$route.params.ip
+      let port = this.$route.params.port
+      this.$router.push({name: "HostPage", params : {ip: ip, port: port}})
     },
     successCreateHost: function() {
       //TODO:后端接口存储数据
@@ -79,6 +92,46 @@ export default {
        let ip = this.$route.params.ip
       let port = this.$route.params.port
       this.$router.push({name: 'TemplateSelectPage',params : {ip: ip, port: port}})
+    },
+
+    initTemplate: function() {
+        let ip = this.$route.params.ip
+        let port = this.$route.params.port
+        let that = this
+        getTemplates(this, ip, port).then(res => {
+            this.templates = res.body
+            this.templates.forEach(template => {
+                template.selected = false
+            })
+            this.$store.dispatch('getZabbixTemplate', { templates: this.templates })
+            
+            // this.$store.state.zabbixGroup.zabbixGroups.forEach(element => {
+            //     if(element.selected) {
+            //         that.host_group = that.host_group + element.name + ", "
+            //     }
+            // })
+        
+        }, err => {
+            console.log(err)
+        })
+      },
+    initGroups: function() {
+        let ip = this.$route.params.ip
+        let port = this.$route.params.port
+        let that = this
+        getGroups(this, ip, port).then((res) => {
+          this.groups = res.body
+          this.groups.forEach(group => {
+            group.selected = false
+          })
+          this.$store.dispatch('getZabbixGroup', {groups: this.groups})
+
+          // this.$store.state.zabbixGroup.groups.forEach(element => {
+          //   if(element.selected) {
+          //     that.host_group = that.host_group + element.name + ','
+          //   }
+          // })
+        })
     }
   },
   created() {
@@ -86,16 +139,29 @@ export default {
   },
   mounted() {
     let that = this
-    this.$store.state.zabbixTemplate.zabbixTemplates.forEach(element => {
-        if(element.selected) {
-            that.host_templates = that.host_templates + element.name + ", "
-        }
+    console.log(this.$route.params.ip)
+    if(this.$store.state.zabbixTemplate.zabbixTemplates.templates === undefined) {
+      this.initTemplate()
+    }
+
+    if(this.$store.state.zabbixGroup.zabbixGroups.groups === undefined) {
+      this.initGroups()
+    }
+
+    this.$store.state.zabbixTemplate.zabbixTemplates.templates.forEach(element => {
+      if(element.selected) {
+          that.host_templates = that.host_templates + element.host + ", "
+      }
     })
-    this.$store.state.zabbixGroup.zabbixGroups.forEach(element => {
+
+     this.$store.state.zabbixGroup.zabbixGroups.groups.forEach(element => {
         if(element.selected) {
-            that.host_group = that.host_group + element.name + ", "
+          that.host_group = that.host_group + element.name + ','
         }
-    })
+      })
+
+    // console.log(this.$store.state.zabbixTemplate.zabbixTemplates)
+    
   }
 }
 </script>

@@ -44,7 +44,8 @@ export default {
     return {
       servers: [
         {
-          ip: "10.60.38.181",
+          ip: "lab205.jios.org",
+          //ip: "10.60.38.181",
           port: "12000",
           name: "Server",
           description: "cluster server",

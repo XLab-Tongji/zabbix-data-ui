@@ -10,10 +10,10 @@
           <li class="nav-header">
             <div class="dropdown profile-element">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Vv</strong>
+                             </span> <span class="text-muted text-xs block">Manager <b class="caret"></b></span> </span> </a>
               <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                <li><a href="#">Logout</a></li>
+                <li><a href="#" @click="logout">Logout</a></li>
               </ul>
             </div>
             <div class="logo-element">
@@ -39,8 +39,8 @@
       <div class="row border-bottom">
         <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
           <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <form role="search" class="navbar-form-custom" method="post" action="#">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary "><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" method="post">
               <div class="form-group">
                 <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
               </div>
@@ -48,7 +48,7 @@
           </div>
           <ul class="nav navbar-top-links navbar-right">
             <li>
-              <a href="#">
+              <a @click="logout">
                 <i class="fa fa-sign-out"></i> Log out
               </a>
             </li>
@@ -88,11 +88,14 @@ export default {
       this.isZabbixPage = true
       this.isIdentityPage = false
     },
-    showIdentityPage: function () {
-      this.$router.push("/2")
-      this.isZabbixPage = false
-      this.isIdentityPage = true
-    },
+    // showIdentityPage: function () {
+    //   this.$router.push("/2")
+    //   this.isZabbixPage = false
+    //   this.isIdentityPage = true
+    // },
+      logout: function() {
+        this.$router.push('/login')
+      }
   },
   mounted() {
    

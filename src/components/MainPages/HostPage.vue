@@ -95,13 +95,15 @@ export default {
   },
   methods: {
     selectTimeChange: function(time) {
-      this.$http.get(global.zabbixUrl + '/filedownload', { params: {
-        hostId: this.hostToDownload.hostid,
-        timeFrom: time[0],
-        timeTill: time[1]
-      }}).then(res => {
-        console.log(res)
-      })
+      // this.$http.get(global.zabbixUrl + '/filedownload', { params: {
+      //   hostId: this.hostToDownload.hostid,
+      //   timeFrom: time[0],
+      //   timeTill: time[1]
+      // }}).then(res => {
+        
+      //   console.log(res)
+      // })
+      window.open(global.zabbixUrl + '/filedownload?hostId=' + this.hostToDownload.hostid + '&timeFrom=' + time[0] + '&timeTill=' + time[1])
     },
     closeBox: function(data) {
       this.showBox = false

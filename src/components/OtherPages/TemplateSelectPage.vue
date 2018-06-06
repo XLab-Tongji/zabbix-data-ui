@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position: relative">
     <el-table
         ref="templateTable"
         :data="data"
@@ -14,33 +14,38 @@
         </el-table-column>
 
         <el-table-column
-        prop="templateId"
+        prop="templateid"
         label="Id"
         width="100">
         </el-table-column>
 
         <el-table-column
-        prop="name"
+        prop="host"
         label="Template"
         min-width="100%">
         </el-table-column>
 
     </el-table>
+    <div style="position: fixed;bottom: 40px;right: 10px">
     <button type="button" class="btn btn-w-m btn-primary" style="margin-top:10px" @click="goHostConfig">Submit</button>
+    </div>
     </div>
 </template>
 
 <script>
+import { getTemplates } from "../../api.js"
 
 export default {
   data() {
     return {
-        data: this.$store.state.zabbixTemplate.zabbixTemplates
+        data: this.$store.state.zabbixTemplate.zabbixTemplates.templates,
+        templates: []
     }
   },
   methods: {
       handleSelectChange: function(selection,row) {
-        let name = row.name
+        let name = row.host
+        console.log(name)
         this.$store.commit('SET_TEMPLATE', { name })
       },
       handleSelectAll: function(selection) {
@@ -58,7 +63,8 @@ export default {
       },
       getSelection: function() {
           var selections = []
-          this.$store.state.zabbixTemplate.zabbixTemplates.forEach(element => {
+          console.log(this.$store.state.zabbixTemplate)
+          this.$store.state.zabbixTemplate.zabbixTemplates.templates.forEach(element => {
               if(element.selected) {
                   selections.push(element)
               }
@@ -69,14 +75,35 @@ export default {
         let ip = this.$route.params.ip
         let port = this.$route.params.port
         this.$router.push({name: 'HostConfigPage',params : {ip: ip, port: port}})
+      },
+      initTemplate: function() {
+        let ip = this.$route.params.ip
+        let port = this.$route.params.port
+        getTemplates(this, ip, port).then(res => {
+            
+            this.templates = res.body
+            this.templates.forEach(template => {
+                template.selected = false
+            })
+            this.$store.dispatch('getZabbixTemplate', { templates: this.templates })
+            
+        }, err => {
+            console.log(err)
+        })
       }
   },
   computed: {
  
   },
   mounted() {
+      //console.log(this.$store.state.zabbixTemplate.zabbixTemplates.templates)
+      if(this.$store.state.zabbixTemplate.zabbixTemplates.templates === undefined) {
+          //console.log("yes")
+        this.initTemplate()
+      } else {
       var selection = this.getSelection()
-      this.toggleSelection(selection)
+        this.toggleSelection(selection)
+      }
   }
 }
 </script>

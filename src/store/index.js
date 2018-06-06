@@ -19,7 +19,7 @@ export default new Vuex.Store({
     zabbixTemplate,
     zabbixGroup
   },
-  plugins: [createPersistedState()],
+  //plugins: [createPersistedState()],
   strict: true,
 })
 
