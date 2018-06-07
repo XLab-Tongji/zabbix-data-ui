@@ -2,6 +2,7 @@
   <!--<div id="app">-->
 
   <!--</div>-->
+<<<<<<< HEAD
   <div id="app">
 
     <nav class="navbar-default navbar-static-side" role="navigation">
@@ -73,11 +74,15 @@
 
     </div>
   </div>
+=======
+  <router-view></router-view>
+>>>>>>> develop
 </template>
 
 <script>
 export default {
   name: 'App',
+<<<<<<< HEAD
   methods: {
     showHostPage: function () {
       this.$router.push("/")
@@ -88,7 +93,15 @@ export default {
     },
     showItemDataPage: function () {
       this.$router.push("/data")
+=======
+  data() {
+    return {
+      
+>>>>>>> develop
     }
+  },
+  methods: {
+
   }
 }
 </script>
