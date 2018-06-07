@@ -49,7 +49,7 @@
                     <el-option
                         v-for="child in itemsChilren"
                         :key="child.label"
-                        :label="child.label"
+                        :label="child.alias"
                         :value="child.label">
                     </el-option>
                 </el-select>
@@ -71,7 +71,7 @@
             <div v-for="item in items">
               <div v-for="child in item.children">
                 <div v-if="selectedItems.indexOf(child.label) !== -1" >
-                  <item-table :table-title="child.label" :table-rows="child.data"></item-table>
+                  <item-table :table-title="child.alias" :table-rows="child.data"></item-table>
                   <hr>
                 </div>
               </div>
@@ -237,6 +237,603 @@ export default {
       yIndex: 0,
 
       //items: []
+      // items: [
+      //   {
+      //     label: "CPU",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: "system.cpu.intr",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.load[percpu,avg1]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.load[percpu,avg15]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.load[percpu,avg5]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.switches",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,idle]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,interrupt]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,iowait]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,nice]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,softirq]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,steal]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,system]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.cpu.util[,user]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+            
+      //     ]
+      //   },
+      //   {
+      //     label: "MEMORY",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: "vm.memory.size[available]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vm.memory.size[total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     label: "INODE",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: "vfs.fs.inode[/,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.inode[/boot,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.inode[/var/lib/docker/aufs,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.inode[/var/lib/kubelet,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.inode[/var/lib/rancher/volumes,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     label: "DISK",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: "system.swap.size[,free]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.swap.size[,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "system.swap.size[,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/,used]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/boot,free]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/boot,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/boot,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/boot,used]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/docker/aufs,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: [],
+      //         chartDetailOptions: [],
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/docker/aufs,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/docker/aufs,used]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/kubelet,free]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/kubelet,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/kubelet,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/kubelet,used]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/rancher/volumes,free]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/rancher/volumes,pfree]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/rancher/volumes,total]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: "vfs.fs.size[/var/lib/rancher/volumes,used]",
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+            
+            
+      //     ]
+      //   },
+      //   {
+      //     label: "NETWORK",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: 'net.if.in[ens160]',
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: 'net.if.out[ens160]',
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       }
+      //     ],
+      //     rendered: false
+      //   },
+      //   {
+      //     label: "PROCESS",
+      //     spread: false,
+      //     firstSpread: false,
+      //     isLeaf: false,
+      //     children: [
+      //       {
+      //         label: 'proc.num[,,run]',
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       },
+      //       {
+      //         label: 'proc.num[]',
+      //         data: [],
+      //         rendered: false,
+      //         isLeaf: true,
+      //         chartOptions: null,
+      //         chartDetailOptions: null,
+      //         selectHosts: [],
+      //         oldSelectHosts: [],
+
+      //         time: [],
+      //       }
+      //     ],
+      //     rendered: false
+      //   }
+      // ],
+
+      //中文监控项
       items: [
         {
           label: "CPU",
@@ -246,11 +843,12 @@ export default {
           children: [
             {
               label: "system.cpu.intr",
+			  alias:"设备中断数",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -258,11 +856,12 @@ export default {
             },
             {
               label: "system.cpu.load[percpu,avg1]",
+			  alias:"CPU负载（一分钟平均值）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -270,11 +869,12 @@ export default {
             },
             {
               label: "system.cpu.load[percpu,avg15]",
+			  alias:"CPU负载（十五分钟平均值）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -282,11 +882,12 @@ export default {
             },
             {
               label: "system.cpu.load[percpu,avg5]",
+			  alias:"CPU负载（五分钟平均值）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -294,11 +895,12 @@ export default {
             },
             {
               label: "system.cpu.switches",
+			  alias:"上下文交换的数量",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -306,11 +908,12 @@ export default {
             },
             {
               label: "system.cpu.util[,idle]",
+			  alias:"CPU利用率（空闲进程）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -318,11 +921,12 @@ export default {
             },
             {
               label: "system.cpu.util[,interrupt]",
+			  alias:"CPU利用率（中断）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -330,11 +934,12 @@ export default {
             },
             {
               label: "system.cpu.util[,iowait]",
+			  alias:"CPU利用率（输入输出等待）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -342,11 +947,12 @@ export default {
             },
             {
               label: "system.cpu.util[,nice]",
+			  alias:"CPU利用率（低优先级用户进程）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -354,11 +960,12 @@ export default {
             },
             {
               label: "system.cpu.util[,softirq]",
+			  alias:"CPU利用率（软件中断）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -366,11 +973,12 @@ export default {
             },
             {
               label: "system.cpu.util[,steal]",
+			  alias:"CPU利用率（虚拟CPU等待真实CPU）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -378,11 +986,12 @@ export default {
             },
             {
               label: "system.cpu.util[,system]",
+			  alias:"CPU利用率（用户进程）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -390,11 +999,12 @@ export default {
             },
             {
               label: "system.cpu.util[,user]",
+			  alias:"CPU利用率（内核空间）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -411,11 +1021,12 @@ export default {
           children: [
             {
               label: "vm.memory.size[available]",
+			  alias:"内存大小（可用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -423,11 +1034,12 @@ export default {
             },
             {
               label: "vm.memory.size[total]",
+			  alias:"内存大小（总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -443,11 +1055,12 @@ export default {
           children: [
             {
               label: "vfs.fs.inode[/,pfree]",
+			  alias:"inode的百分比（剩余）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -455,11 +1068,12 @@ export default {
             },
             {
               label: "vfs.fs.inode[/boot,pfree]",
+			  alias:"inode的百分比（boot目录，剩余）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -467,11 +1081,12 @@ export default {
             },
             {
               label: "vfs.fs.inode[/var/lib/docker/aufs,pfree]",
+			  alias:"inode的百分比（/var/lib/docker/aufs目录，剩余）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -479,11 +1094,12 @@ export default {
             },
             {
               label: "vfs.fs.inode[/var/lib/kubelet,pfree]",
+			  alias:"inode的百分比（/var/lib/kubelet目录，剩余）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -491,11 +1107,12 @@ export default {
             },
             {
               label: "vfs.fs.inode[/var/lib/rancher/volumes,pfree]",
+			  alias:"inode的百分比（/var/lib/rancher/volumes目录，剩余）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -511,11 +1128,12 @@ export default {
           children: [
             {
               label: "system.swap.size[,free]",
+			  alias:"交换空间大小（可用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -523,11 +1141,12 @@ export default {
             },
             {
               label: "system.swap.size[,pfree]",
+			  alias:"交换空间大小（可用百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -535,11 +1154,12 @@ export default {
             },
             {
               label: "system.swap.size[,total]",
+			  alias:"交换空间大小（总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -547,11 +1167,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/,pfree]",
+			  alias:"磁盘空间（剩余百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -559,11 +1180,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/,total]",
+			  alias:"磁盘空间（总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -571,11 +1193,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/,used]",
+			  alias:"磁盘空间（已用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -583,11 +1206,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/boot,free]",
+			  alias:"磁盘空间（/boot目录，可用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -595,11 +1219,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/boot,pfree]",
+			  alias:"磁盘空间（/boot目录，可用百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -607,11 +1232,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/boot,total]",
+			  alias:"磁盘空间（/boot目录，总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -619,11 +1245,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/boot,used]",
+			  alias:"磁盘空间（/boot目录，已用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -631,6 +1258,7 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,pfree]",
+			  alias:"磁盘空间（/var/lib/docker/aufs目录，可用百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
@@ -643,11 +1271,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,total]",
+			  alias:"磁盘空间（/var/lib/docker/aufs目录，总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -655,11 +1284,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/docker/aufs,used]",
+			  alias:"磁盘空间（/var/lib/docker/aufs目录，已用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -667,11 +1297,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,free]",
+			  alias:"磁盘空间（/var/lib/kubelet目录，可用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -679,11 +1310,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,pfree]",
+			  alias:"磁盘空间（/var/lib/kubelet目录，可用百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -691,11 +1323,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,total]",
+			  alias:"磁盘空间（/var/lib/kubelet目录，总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -703,11 +1336,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/kubelet,used]",
+			  alias:"磁盘空间（/var/lib/kubelet目录，已用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -715,11 +1349,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,free]",
+			  alias:"磁盘空间（/var/lib/rancher/volumes目录，可用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -727,11 +1362,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,pfree]",
+			  alias:"磁盘空间（/var/lib/rancher/volumes目录，可用百分比）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -739,11 +1375,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,total]",
+			  alias:"磁盘空间（/var/lib/rancher/volumes目录，总共）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -751,11 +1388,12 @@ export default {
             },
             {
               label: "vfs.fs.size[/var/lib/rancher/volumes,used]",
+			  alias:"磁盘空间（/var/lib/rancher/volumes目录，已用）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -773,11 +1411,12 @@ export default {
           children: [
             {
               label: 'net.if.in[ens160]',
+			  alias:"网卡流入量统计",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -785,11 +1424,12 @@ export default {
             },
             {
               label: 'net.if.out[ens160]',
+			  alias:"网卡流出量统计",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -806,11 +1446,12 @@ export default {
           children: [
             {
               label: 'proc.num[,,run]',
+			  alias:"进程数量（运行）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -818,11 +1459,12 @@ export default {
             },
             {
               label: 'proc.num[]',
+			  alias:"进程数量（所有）",
               data: [],
               rendered: false,
               isLeaf: true,
-              chartOptions: null,
-              chartDetailOptions: null,
+              chartOptions: [],
+              chartDetailOptions: [],
               selectHosts: [],
               oldSelectHosts: [],
 
@@ -901,8 +1543,8 @@ export default {
             let child = this.searchChild($.selectedItems[index - 1])
             child.data = res.body
             let host = this.hosts.filter(t => t.hostid == $.paramsHostid)
-            let option = this.getOption(child.data, child.label, false);
-            let detailOption = this.getOption(child.data, child.label, true, host[0].label);
+            let option = this.getOption(child.data, child.alias, false);
+            let detailOption = this.getOption(child.data, child.alias, true, host[0].label);
             child.chartOptions = option;
             child.chartDetailOptions = detailOption;
           }, err => {

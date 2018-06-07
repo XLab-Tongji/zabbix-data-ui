@@ -38,14 +38,15 @@
 </template>
 
 <script>
+import {getClusters} from '../../api.js'
 export default {
   name: "ClusterPage",
   data() {
     return {
       servers: [
         {
-          ip: "lab205.jios.org",
-          //ip: "10.60.38.181",
+          //ip: "lab205.jios.org",
+          ip: "10.60.38.181",
           port: "12000",
           name: "Server",
           description: "cluster server",
@@ -83,7 +84,9 @@ export default {
     }
   },
   mounted() {
-    //TODO:请求servers数据
+      getClusters(this).then(res => {
+        console.log(res)
+      })
   }
 }
 </script>

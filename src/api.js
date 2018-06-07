@@ -11,8 +11,8 @@ export function getItemsData(context, ip, port, hostid, key, timeFrom, timeTill)
         port: port,
         hostid: hostid,
         key: key,
-        timeFrom: timeFrom,
-        timeTill: timeTill
+        time_from: timeFrom,
+        time_till: timeTill
     }})
 }
 
@@ -32,4 +32,8 @@ export function getGroups(context, ip ,port) {
         ip: ip,
         port: port
     }})
+}
+
+export function getClusters(context) {
+    return context.$http.get(global.zabbixUrl + '/get_cluster')
 }
