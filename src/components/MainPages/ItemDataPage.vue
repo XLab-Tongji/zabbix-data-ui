@@ -1480,24 +1480,24 @@ export default {
       valueType: "3",
 
       time:[],
-      timeFrom: Date.parse(new Date()) / 1000 - 3 * 60 * 60,
+      timeFrom: Date.parse(new Date()) / 1000 - 60 * 60,
       timeTill: Date.parse(new Date()) / 1000,
       pickerOptions: {
           shortcuts: [
             {
+            text: '最近3小时',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 3);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
             text: '最近6小时',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 6);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近12小时',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 12);
               picker.$emit('pick', [start, end]);
             }
           }, {

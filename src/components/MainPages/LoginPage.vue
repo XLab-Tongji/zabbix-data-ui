@@ -29,12 +29,12 @@
             </div>
             <div class="col-md-6">
                 <div class="ibox-content">
-                    <form class="m-t" role="form" action="index.html">
+                    <form class="m-t" role="form">
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Username" required="">
+                            <input type="text" class="form-control" placeholder="Username" required="" v-model="username">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password" required="">
+                            <input type="password" class="form-control" placeholder="Password" required="" v-model="password">
                         </div>
                         <button type="submit" class="btn btn-primary block full-width m-b" @click="login(1)">Login</button>
 
@@ -67,16 +67,23 @@
 </template>
 
 <script>
+import { login } from '../../api.js'
 export default {
   data() {
     return {
-
+        username: '',
+        password: ''
     }
   },
   methods: {
       login: function(userid) {
-          this.$router.push({name: 'ClusterPage', params: {userid: userid}})
-          //this.$router.push('/user' + '/' + userid + '/cluster')
+          login(this, this.username, this.password).then(res => {
+              console.log(res)
+              if(res.bodyText == 'success') {
+                  toastr.success('Login successfully')
+                  this.$router.push({name: 'ClusterPage', params: {userid: userid}})
+              }
+          })
       },
       goRegister: function() {
           this.$router.push('/register')

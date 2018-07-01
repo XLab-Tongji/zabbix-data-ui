@@ -71,7 +71,7 @@ export default {
       },
       goHostConfig: function() {
           let ip = this.$route.params.ip
-            let port = this.$route.params.port
+          let port = this.$route.params.port
           this.$router.push({name: 'HostConfigPage', params : {ip: ip, port: port}})
       },
 

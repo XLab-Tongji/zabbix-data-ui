@@ -37,3 +37,17 @@ export function getGroups(context, ip ,port) {
 export function getClusters(context) {
     return context.$http.get(global.zabbixUrl + '/get_cluster')
 }
+
+export function login(context, username, password) {
+    return context.$http.get(global.zabbixUrl + '/login', {params: {
+        username: username,
+        password: password
+    }})
+}
+
+export function register(context, username, password) {
+    return context.$http.get(global.zabbixUrl + '/register', {params: {
+        username: username,
+        password: password
+    }})
+}

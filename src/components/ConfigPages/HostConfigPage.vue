@@ -71,8 +71,9 @@ export default {
     },
     goBack: function() {
       let ip = this.$route.params.ip
+      console.log(ip)
       let port = this.$route.params.port
-      this.$router.push({name: "HostPage", params : {ip: ip, port: port}})
+      this.$router.push({name: "HostPage", params: {ip: ip, port: port}})
     },
     successCreateHost: function() {
       //TODO:后端接口存储数据
@@ -84,7 +85,7 @@ export default {
       toastr.success("添加成功")
     },
     selectGroup: function() {
-       let ip = this.$route.params.ip
+      let ip = this.$route.params.ip
       let port = this.$route.params.port
       this.$router.push({name: 'GroupSelectPage',params : {ip: ip, port: port}})
     },
